@@ -12,13 +12,13 @@ $height = $dimdata['dim2'];
 
 $answerstring = substr($data, 0x34, $width*$height); //Find the answers string
 
-for ($i = 0; $i <= $height-1; ++$i) { // Make a 2d array of answers
+for ($i = 0; $i <= $height-1; $i++) { // Make a 2d array of answers
 	$answergrid[$i] = preg_split('//', substr($answerstring, $i*$width, $width));
 }
 
 $bwstring = substr($data, 0x34+$width*$height, $width*$height); //Find the crossword structure
 
-for ($i = 0; $i < $height; ++$i) { // Make a 2d array of structure
+for ($i = 0; $i < $height; $i++) { // Make a 2d array of structure
 	$bwgrid[$i] = str_split(substr($bwstring, $i*$width, $width));
 }
 
@@ -28,8 +28,8 @@ $newclues = preg_split('/\0/', $cluestring);
 
 $header = array("title" => array_shift($newclues), "author" => array_shift($newclues), "copyright" => array_shift($newclues));
 
-for ($i = 0; $i < count($bwgrid); ++$i) { // 2d Array of Clue Numbers
-	for ($j = 0; $j < count($bwgrid[$i]); ++$j) {
+for ($i = 0; $i < count($bwgrid); $i++) { // 2d Array of Clue Numbers
+	for ($j = 0; $j < count($bwgrid[$i]); $j++) {
 		$numgrid[$i][$j] = $bwgrid[$i][$j];
 	}
 }
@@ -50,10 +50,51 @@ for ($i = 0; $i <= $width; $i++) {
 	array_unshift($numgrid[$i], -1);
 }
 
+// Now we need to do some clue numbering!
+
+$across = array();
+$down = array();
+$c = 0;
+
+//for my $i (1..$h) {
+for ($i = 1; $i <= $height; $i++) {
+	
+	for ($j = 1; $j <= $width; $j++) {
+		
+		if ($bwgrid[$i][$j] == '.'){ 
+	      $bwgrid[$i][$j] = -1 ;
+	      $numgrid[$i][$j] = -1;
+	    }
+	    
+	    if ($bwgrid[$i][$j] == -1) {
+	    	continue;
+	    }
+		
+		if ($bwgrid[$i][$j-1] == -1 or $bwgrid[$i-1][$j] == -1){ // If a square has -1 to it's left or top, it's a clue. So give it a number!
+	      $c++;
+	      $numgrid[$i][$j] = $c;
+	    }
+	    
+	    if ($bwgrid[$i][$j-1] == -1){ 
+	    	array_push($across, $c.'. '.array_shift($newclues));
+	    }
+	    
+	    if ($bwgrid[$i-1][$j] == -1){ 
+	    	array_push($down, $c.'. '.array_shift($newclues)); 
+	    }
+	    
+	}
+
+}
+
 
 
 echo "<pre>";
-print_r($numgrid);
+print_r($across);
+echo "</pre>";
+
+echo "<pre>";
+print_r($down);
 echo "</pre>";
 
 $cells = str_split($bwstring);
