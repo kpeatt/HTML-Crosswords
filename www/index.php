@@ -54,7 +54,7 @@ for ($i = 0; $i <= $width; $i++) {
 
 $across = array();
 $down = array();
-$c = 0;
+$cluenumber = 0;
 
 //for my $i (1..$h) {
 for ($i = 1; $i <= $height; $i++) {
@@ -71,16 +71,16 @@ for ($i = 1; $i <= $height; $i++) {
 	    }
 		
 		if ($bwgrid[$i][$j-1] == -1 or $bwgrid[$i-1][$j] == -1){ // If a square has -1 to it's left or top, it's a clue. So give it a number!
-	      $c++;
-	      $numgrid[$i][$j] = $c;
+	      $cluenumber++;
+	      $numgrid[$i][$j] = $cluenumber;
 	    }
 	    
 	    if ($bwgrid[$i][$j-1] == -1){ 
-	    	array_push($across, $c.'. '.array_shift($newclues));
+	    	array_push($across, $cluenumber.'. '.array_shift($newclues));
 	    }
 	    
 	    if ($bwgrid[$i-1][$j] == -1){ 
-	    	array_push($down, $c.'. '.array_shift($newclues)); 
+	    	array_push($down, $cluenumber.'. '.array_shift($newclues)); 
 	    }
 	    
 	}
@@ -96,8 +96,6 @@ echo "</pre>";
 echo "<pre>";
 print_r($down);
 echo "</pre>";
-
-$cells = str_split($bwstring);
 
 ?>
 
@@ -121,38 +119,30 @@ $cells = str_split($bwstring);
 
 </style>
 
-<table>
-
 	<?php
+	
+		$html = "<table>";
 		
-		$i = 1;
-		
-		foreach($cells as $cell) {
+		for ($i = 1; $i <= $height; $i++) {
+
+			$html .= "\n\t<tr>";
 			
-			if($i == 1) {
-				echo "<tr>";
+			for ($j = 1; $j <= $width; $j++) {
+			
+				if ($numgrid[$i][$j] == -1){ //It's a black square!
+					$html .= "\n\t\t<td class='black'></td>";
+				} else if ($numgrid[$i][$j] > 0) { // It's a clue!
+					$html .= "\n\t\t<td class='space'><div class='number'>".$numgrid[$i][$j]."</div></td>";
+				} else { // It's a blank square!
+					$html .= "\n\t\t<td class='space'></td>";
+				}
 			}
 			
-			if($cell == '-') {
-				$celltype = 'space';
-			} elseif($cell == '.') {
-				$celltype = 'black';
-			}
-			
-			echo "<td class='".$celltype."'></td>";
-			
-			if($i == $width) {
-				echo "</tr>";
-			}
-			
-			$i++;
-			
-			if($i > $width) {
-				$i = 1;
-			}
-		
+			$html .= "\n\t</tr>";
 		}
+		
+		$html .= "\n</table>";
+		
+		echo $html;
 	
 	?>
-
-</table>
