@@ -18,11 +18,11 @@ for ($i = 0; $i <= $height-1; ++$i) { // Make a 2d array of answers
 
 $bwstring = substr($data, 0x34+$width*$height, $width*$height); //Find the crossword structure
 
-for ($i = 0; $i < $height-1; ++$i) { // Make a 2d array of structure
-	$bwgrid[$i] = preg_split('//', substr($bwstring, $i*$width, $width));
+for ($i = 0; $i < $height; ++$i) { // Make a 2d array of structure
+	$bwgrid[$i] = str_split(substr($bwstring, $i*$width, $width));
 }
 
-$cluestring = substr($data, 0x34+$width*$height+$width*$height);
+$cluestring = substr($data, 0x34+($width*$height+$width*$height));
 
 $newclues = preg_split('/\0/', $cluestring);
 
@@ -34,8 +34,26 @@ for ($i = 0; $i < count($bwgrid); ++$i) { // 2d Array of Clue Numbers
 	}
 }
 
+array_unshift($bwgrid, array()); // Add row of -1s to top and left of BWGrid
+for ($i = 0; $i < $width; $i++) {
+	array_push($bwgrid[0], -1);
+}
+for ($i = 0; $i <= $width; $i++) {
+	array_unshift($bwgrid[$i], -1);
+}
+
+array_unshift($numgrid, array()); // Do the same thing to NumGrid
+for ($i = 0; $i < $width; $i++) {
+	array_push($numgrid[0], -1);
+}
+for ($i = 0; $i <= $width; $i++) {
+	array_unshift($numgrid[$i], -1);
+}
+
+
+
 echo "<pre>";
-print_r($header);
+print_r($numgrid);
 echo "</pre>";
 
 $cells = str_split($bwstring);
@@ -51,7 +69,6 @@ $cells = str_split($bwstring);
 	}
 	
 	td {
-		display: table-cell;
 		width: 25px;
 		height: 25px;
 		border: 1px solid black;
