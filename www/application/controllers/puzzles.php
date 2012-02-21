@@ -35,5 +35,11 @@ class Puzzles extends CI_Controller {
 		$this->load->view('templates/footer');
 		
 	}
+	
+	public function download() {
+		$this->load->model("src_jonesin_model");
+		$results = $this->src_jonesin_model->getConfig();
+		print_r($results);
+	}
 
 }
