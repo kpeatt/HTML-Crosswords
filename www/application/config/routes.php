@@ -38,15 +38,8 @@
 |
 */
 
-$route['cron/update'] = 'cron/update';
-$route['cron'] = 'cron';
-$route['puzzles/download'] = 'puzzles/download';
 $route['puzzles/(:any)'] = 'puzzles/view/$1';
 $route['puzzles'] = 'puzzles';
-$route['news/create'] = 'news/create';
-$route['news/(:any)'] = 'news/view/$1';
-$route['news'] = 'news';
-$route['(:any)'] = 'pages/view/$1';
 $route['default_controller'] = "puzzles";
 $route['404_override'] = '';
 

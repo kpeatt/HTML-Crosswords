@@ -25,10 +25,14 @@ class Puzzles extends CI_Controller {
 			show_404();
 		}
 		
+		$data['html'] = $this->puzzles_model->render_puzzle($data['puzzle']);
+		
+		$data['puzzle']['across'] = json_decode($data['puzzle']['across'], true);
+		$data['puzzle']['down'] = json_decode($data['puzzle']['down'], true);
+		
 		$data['title'] = $data['puzzle']['meta']['title'];
-		$data['html'] = $this->puzzles_model->render_puzzle($data['puzzle']);	
 										
-		$data['head'] = array('specificjs');								
+		$data['head'] = array('crossword.js');				
 		
 		$this->load->view('templates/header', $data);
 		$this->load->view('puzzles/view', $data);

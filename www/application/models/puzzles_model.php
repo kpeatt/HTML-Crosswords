@@ -35,19 +35,60 @@ class Puzzles_model extends CI_Model {
 	}
 	
 	public function render_puzzle($puzzle) {
-				
+		
+		$puzzleGrids = $this->puzzle_grids($puzzle);
+		
 		$width = $puzzle['meta']['width'];
 		$height = $puzzle['meta']['height'];
 		
-		$answerstring = $puzzle['answerstring'];
- 		$answergrid = array();
-
+		$bwgrid = $puzzleGrids['bwgrid'];
+		$numgrid = $puzzleGrids['numgrid'];
+		
+		///Time to render the HTML!
+		
+		$html = "<table>";
+         
+        $k = 1; //For the cell count
+         
+        for ($i = 1; $i <= $height; $i++) {
  
+            $html .= "\n\t<tr>";
+             
+            for ($j = 1; $j <= $width; $j++) {
+             
+                if ($numgrid[$i][$j] == -1){ //It's a black square!
+                    $html .= "\n\t\t<td class='black'></td>";
+                    $k++;
+                } else if ($numgrid[$i][$j] > 0) { // It's a clue!
+                    $html .= "\n\t\t<td class='space'><div class='wrapper'><div class='number'>".$numgrid[$i][$j]."</div><input type='text' class='answer' maxlength='1' rel='[".$i."][".$j."]' id='cell_".$k."'></div></td>";
+                    $k++;
+                } else { // It's a blank square!
+                    $html .= "\n\t\t<td class='space'><div class='wrapper'><input type='text' class='answer' maxlength='1' rel='[".$i."][".$j."]' id='cell_".$k."'></div></td>";
+                    $k++;
+                }
+            }
+             
+            $html .= "\n\t</tr>";
+        }
+         
+        $html .= "\n</table>";
+                
+        return $html;
+		
+	}
+	
+	public function puzzle_grids($puzzle) {
+		
+		$width = $puzzle['meta']['width'];
+		$height = $puzzle['meta']['height'];
+		$answerstring = $puzzle['answerstring'];
+		$bwstring = $puzzle['bwstring'];
+
+		$answergrid = array();
+
 		for ($i = 0; $i <= $height-1; $i++) { // Make a 2d array of answers
 		    $answergrid[$i] = str_split(substr($answerstring, $i*$width, $width));
 		}
-		
-		$bwstring = $puzzle['bwstring'];
 		
 		$bwgrid = array();
 		$numgrid = array();
@@ -110,36 +151,9 @@ class Puzzles_model extends CI_Model {
 		 
 		}
 		
-		///Time to render the HTML!
-		
-		$html = "<table>";
-         
-        $k = 1; //For the cell count
-         
-        for ($i = 1; $i <= $height; $i++) {
- 
-            $html .= "\n\t<tr>";
-             
-            for ($j = 1; $j <= $width; $j++) {
-             
-                if ($numgrid[$i][$j] == -1){ //It's a black square!
-                    $html .= "\n\t\t<td class='black'></td>";
-                    $k++;
-                } else if ($numgrid[$i][$j] > 0) { // It's a clue!
-                    $html .= "\n\t\t<td class='space'><div class='wrapper'><div class='number'>".$numgrid[$i][$j]."</div><input type='text' class='answer' maxlength='1' rel='[".$i."][".$j."]' id='cell_".$k."'></div></td>";
-                    $k++;
-                } else { // It's a blank square!
-                    $html .= "\n\t\t<td class='space'><div class='wrapper'><input type='text' class='answer' maxlength='1' rel='[".$i."][".$j."]' id='cell_".$k."'></div></td>";
-                    $k++;
-                }
-            }
-             
-            $html .= "\n\t</tr>";
-        }
-         
-        $html .= "\n</table>";
-                
-        return $html;
+		$puzzleGrids = array('bwgrid' => $bwgrid, 'numgrid' => $numgrid, 'answergrid' => $answergrid);
+				
+		return $puzzleGrids;
 		
 	}
 
