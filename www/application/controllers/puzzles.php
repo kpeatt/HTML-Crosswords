@@ -14,7 +14,7 @@ class Puzzles extends CI_Controller {
 					
 		$this->load->view('templates/header', $data);
 		$this->load->view('puzzles/index', $data);
-		$this->load->view('templates/footer');
+		$this->load->view('templates/footer', $data);
 	}
 	
 	public function view($slug) {
@@ -32,12 +32,11 @@ class Puzzles extends CI_Controller {
 		
 		$data['title'] = $data['puzzle']['meta']['title'];
 										
-		$data['head'] = array('crossword.js');				
+		$data['js'] = array('jquery', 'crosswordview');				
 		
 		$this->load->view('templates/header', $data);
 		$this->load->view('puzzles/view', $data);
-		$this->load->view('templates/footer');
-		
+		$this->load->view('templates/footer', $data);
 	}
 	
 	public function download() {
