@@ -1,57 +1,86 @@
-	<h1><?php echo $puzzle['meta']['title']; ?></h1>
-	<p><?php if(isset($puzzle['meta']['author']) && !empty($puzzle['meta']['author'])) { echo $puzzle['meta']['author']; } if (isset($puzzle['meta']['author']) && !empty($puzzle['meta']['copyright'])) { echo ', '.$puzzle['meta']['copyright']; } ?></p>
+	<div class="navbar navbar-fixed-top">
+	
+		<div class="navbar-inner">
+		    <div class="container">
 
-	<div id="puzzle">
-		<?php echo $html; ?>
+				<a class="brand" href="#">
+					WordMist
+				</a>
+
+		    </div>
+	  </div>
+	
 	</div>
 	
-	<div id="clues">
+	<div class="row-fluid">
 	
-		<div class="across">
+		<div class="span12">
 		
-		    <h2>Across:</h2>
-		    
-		    <ol>
-		        <?php 
-		         
-		            $i = 0; foreach($puzzle['across'] as $clue) {
-		             
-		             	if(isset($clue['cluetext']) && !empty($clue['cluetext'])) {
-		             
-		                    echo "\n\t\t\t<li value='".$clue['cluenumber']."'>".$clue['cluetext']."</li>";
-		                    
-		                }
-		                     
-		            $i++;   }
-		             
-		        ?>
-		     
-		    </ol>
-	        
+			<h1><?php echo $puzzle['meta']['title']; ?></h1>
+			<p><?php if(isset($puzzle['meta']['author']) && !empty($puzzle['meta']['author'])) { echo $puzzle['meta']['author']; } if (isset($puzzle['meta']['author']) && !empty($puzzle['meta']['copyright'])) { echo ', '.$puzzle['meta']['copyright']; } ?></p>
+			
 		</div>
-		
-		<div class="down">
+
+	</div>
 	
-		    <h2>Down:</h2>
+	<div class="row-fluid">
+		
+		<div id="puzzle" class="span6">
+			<?php echo $html; ?>
+		</div>
+	
+		<div id="clues" class="span6">
+		
+			<div class="row-fluid">
+		
+				<div class="across span6">
+				
+				    <h2>Across:</h2>
+				    
+				    <ol>
+				        <?php 
+				         
+				            $i = 0; foreach($puzzle['across'] as $clue) {
+				             
+				             	if(isset($clue['cluetext']) && !empty($clue['cluetext'])) {
+				             
+				                    echo "\n\t\t\t<li value='".$clue['cluenumber']."'>".$clue['cluetext']."</li>";
+				                    
+				                }
+				                     
+				            $i++;   }
+				             
+				        ?>
+				     
+				    </ol>
+			        
+				</div>
+				
+				<div class="down span6">
+			
+				    <h2>Down:</h2>
+				    
+				    <ol>
+				        <?php 
+				         
+				            $i = 0; foreach($puzzle['down'] as $clue) {
+				             
+				             	if(isset($clue['cluetext']) && !empty($clue['cluetext'])) {
+				             
+				                    echo "\n\t\t\t<li value='".$clue['cluenumber']."'>".$clue['cluetext']."</li>";
+				                    
+				                }
+				                     
+				            $i++;   }
+				             
+				        ?>
+				     
+				    </ol>
+			    
+			    </div>
 		    
-		    <ol>
-		        <?php 
-		         
-		            $i = 0; foreach($puzzle['down'] as $clue) {
-		             
-		             	if(isset($clue['cluetext']) && !empty($clue['cluetext'])) {
-		             
-		                    echo "\n\t\t\t<li value='".$clue['cluenumber']."'>".$clue['cluetext']."</li>";
-		                    
-		                }
-		                     
-		            $i++;   }
-		             
-		        ?>
-		     
-		    </ol>
-	    
-	    </div>
-	        
+		    </div>
+		        
+		</div>
 	</div>
 

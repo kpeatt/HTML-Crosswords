@@ -11,6 +11,11 @@ class Puzzles extends CI_Controller {
 	public function index()	{
 		$data['puzzles'] = $this->puzzles_model->get_puzzle();
 		$data['title'] = 'Puzzles Collection';
+		
+		$data['puzzle'] = '';
+		
+		$data['js'] = array('jquery', 'bootstrap', 'crosswordview');	
+		$data['css'] = array('common', 'bootstrap');
 					
 		$this->load->view('templates/header', $data);
 		$this->load->view('puzzles/index', $data);
@@ -32,7 +37,8 @@ class Puzzles extends CI_Controller {
 		
 		$data['title'] = $data['puzzle']['meta']['title'];
 										
-		$data['js'] = array('jquery', 'crosswordview');				
+		$data['js'] = array('jquery', 'bootstrap', 'crosswordview');	
+		$data['css'] = array('common', 'bootstrap');
 		
 		$this->load->view('templates/header', $data);
 		$this->load->view('puzzles/view', $data);

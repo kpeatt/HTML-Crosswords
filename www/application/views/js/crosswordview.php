@@ -1,11 +1,14 @@
 <script type="text/javascript">
     $(function(){
+    
+    	$('#puzzle td').height($('#puzzle td').width());
+    	
         var answerKey = "<?php echo $puzzle['answerstring']; ?>";
          
         $('input.answer').blur(function() {
              
             var currentCell = $(this).attr('id').substr(5);
-            var response = $(this).val();
+            var response = $(this).val().toLowerCase();
             var answer = answerKey.charAt(currentCell-1).toLowerCase();
              
             console.log(response);
@@ -22,4 +25,9 @@
              
         });
     });
+    
+    $(window).resize(function() {
+    	$('#puzzle td').height($('#puzzle td').width());
+    });
+    
 </script>

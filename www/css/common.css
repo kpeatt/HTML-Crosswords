@@ -1,31 +1,31 @@
 body {
     font-family: Arial, sans-serif;
+    padding-top: 40px;
 }
 
-table {
+#puzzle table {
     border: 1px solid black;
     border-collapse: collapse;
     empty-cells: show;
 }
  
-td {
-    width: 40px;
-    height: 40px;
+#puzzle td {
+    width: 2%;
     border: 1px solid black;
     text-align: center;
 }
  
-td.black {
+#puzzle td.black {
     background: black;
 }
  
-td .wrapper {
+#puzzle td .wrapper {
     width: 100%;
     height: 100%;
     position: relative;
 }
  
-.number {
+#puzzle .number {
     font-size: 12px;
     top: 0;
     position: absolute;
@@ -34,7 +34,7 @@ td .wrapper {
     color: #666;
 }
  
-span.answer {
+#puzzle span.answer {
     font-weight: bold;
     font-size: 18px;
      
@@ -44,7 +44,7 @@ span.answer {
     line-height: 40px;
 }
  
-input.answer {
+#puzzle input.answer {
     font-weight: bold;
     font-family: Arial,sans-serif;
     width: 100%;
@@ -56,16 +56,18 @@ input.answer {
     text-transform:uppercase;
 }
  
-input.answer:focus {
+#puzzle input.answer:focus {
     background: lightCyan;
     outline: 1px solid lightCyan;
     outline-offset: 0;
 }
  
-input.right {
+#puzzle input.right {
     background: paleGreen;
 }
  
-input.wrong {
+#puzzle input.wrong {
     background: salmon;
 }
+
+

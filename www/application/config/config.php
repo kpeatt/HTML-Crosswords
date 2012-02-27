@@ -44,7 +44,7 @@ $config['index_page'] = '';
 | 'ORIG_PATH_INFO'	Uses the ORIG_PATH_INFO
 |
 */
-$config['uri_protocol']	= 'REQUEST_URI';
+$config['uri_protocol']	= 'AUTO';
 
 /*
 |--------------------------------------------------------------------------
@@ -357,6 +357,39 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
+
+/*
+|--------------------------------------------------------------------------
+| Facebook App ID
+|
+| If you want to integrate with Facebook Connect authentication, put your
+| Facebook App ID below.
+|--------------------------------------------------------------------------
+*/
+$config['facebook_app_id'] = '180752555369340';
+$config['facebook_app_key'] = '180752555369340';
+$config['facebook_app_secret'] = 'KEY';
+
+/*
+|--------------------------------------------------------------------------
+| Twitter App ID
+|
+| If you want to integrate with Twitter oAuth authentication, put your
+| Twitter app details below.
+|--------------------------------------------------------------------------
+*/
+$config['tweet_consumer_key'] = 'lS2bsaeglJoiIDhRM99zFw';
+$config['tweet_consumer_secret'] = 'KEY';
+
+/*
+|--------------------------------------------------------------------------
+| Google Friend Connect App ID
+|
+| If you want to integrate with Twitter oAuth authentication, put your
+| Twitter app details below.
+|--------------------------------------------------------------------------
+*/
+$config['google_app_id'] = '';
 
 /*
 |--------------------------------------------------------------------------

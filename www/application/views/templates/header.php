@@ -10,7 +10,13 @@
 	<meta name="keywords" content="" />
 	<meta name="robots" content="" />
 	
-	<link href="/css/screen.css" media="screen" rel="stylesheet" type="text/css" >
+	<?php 	
+	if(isset($css) && !empty($css)){
+	    foreach($css as $item) {
+	        $this->load->view('css/'.$item);
+	    }
+	}
+	?>
 
 </head>
 
