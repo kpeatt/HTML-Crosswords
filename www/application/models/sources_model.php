@@ -6,6 +6,7 @@ class Sources_model extends CI_Model {
 		parent::__construct();
 		$this->load->model('puzzles_model');
 		$this->load->helper('json');
+		$this->load->library('xml');
 	}
 	
 	public function getSources() {
@@ -33,9 +34,9 @@ class Sources_model extends CI_Model {
 			$header = json_decode($sourceConfig['header']);
 		}
 		
-		if (!file_exists('puzzles/'.$sourceConfig['name'].'/'.date('ymd').'-'.$filename.'.puz')) {
+		if (!file_exists('puzzles/'.$sourceConfig['name'].'/'.date('ymd').'-'.$filename.'.'.$sourceConfig['filetype'])) {
 		
-			$fp = fopen('puzzles/'.$sourceConfig['name'].'/'.date('ymd').'-'.$filename.'.puz', 'w');
+			$fp = fopen('puzzles/'.$sourceConfig['name'].'/'.date('ymd').'-'.$filename.'.'.$sourceConfig['filetype'], 'w');
 	
 			$curl_handle=curl_init();
 			curl_setopt($curl_handle,CURLOPT_URL,$sourceConfig['url'].$filename.'.'.$sourceConfig['filetype']);			
@@ -63,12 +64,18 @@ class Sources_model extends CI_Model {
 			
 			echo $filename.' downloaded! <br>';
 			
+			if ($sourceConfig['filetype'] == 'jpz') {
+				$content = $this->getJPZData($content);
+			} else {
+				$content = $this->getPuzData($content);
+			}
+			
 			$data = $this->parsePuzzle($content);
 			
 			$data = array('source_id' => $sourceConfig['id']) + array('slug' => $sourceConfig['name'].'-'.date('ymd')) + $data;
 			
 			return $this->db->insert('puzzles', $data);
-
+			
 		}
 	}
 	
@@ -87,74 +94,71 @@ class Sources_model extends CI_Model {
 		
 	}
 	
-	public function parsePuzzle($puzzledata) {
-	
-		$puzzle = array();
+	public function parsePuzzle($puzzle) {
+				
+		$width = $puzzle['meta']['width'];
+		$height = $puzzle['meta']['height'];
+		$bwstring = $puzzle['bwstring'];
+		$answerstring = $puzzle['answerstring'];
 		
-		$dimdata = unpack("c2dim", substr($puzzledata, 0x2C, 2));
-		
-		$width = $dimdata['dim1'];
-		$height = $dimdata['dim2'];
-		
-		$answerstring = substr($puzzledata, 0x34, $width*$height); //Find the answers string
-		$bwstring = substr($puzzledata, 0x34+$width*$height, $width*$height); //Find the crossword structure
-		
-		$puzzle['meta']['width'] = $width;
-		$puzzle['meta']['height'] = $height;
-		$puzzle['bwstring'] = $bwstring;
-		$puzzle['answerstring'] = $answerstring;
+		if (isset($puzzle['cluestring'])) {
+			$cluestring = $puzzle['cluestring'];
+		}
 		
 		$puzzleGrids = $this->puzzles_model->puzzle_grids($puzzle);
 		
 		$bwgrid = $puzzleGrids['bwgrid'];
 		$numgrid = $puzzleGrids['numgrid'];
 
-		$cluestring = substr($puzzledata, 0x34+($width*$height+$width*$height));
+		if ($puzzle['filetype'] == 'jpz') {
+			$across = $puzzle['across'];
+			$down = $puzzle['down']; 
+		} 
 		
-		$newclues = preg_split('/\0/', $cluestring);
-
-		$header = array("title" => array_shift($newclues), "author" => array_shift($newclues), "copyright" => array_shift($newclues));
-
-		// Now we need to do some clue numbering!
- 
-		$across = array();
-		$down = array();
-		$cluenumber = 0;
+		else if ($puzzle['filetype'] == 'puz') {
 		
-		for ($i = 1; $i <= $height; $i++) {
-		     
-		    for ($j = 1; $j <= $width; $j++) {
-		         
-		        if ($bwgrid[$i][$j] == '.'){ 
-		          $bwgrid[$i][$j] = -1 ;
-		          $numgrid[$i][$j] = -1;
-		        }
-
-		        if ($bwgrid[$i][$j] == -1) {
-		            continue;
-		        }
-
-		        if ($bwgrid[$i][$j-1] == -1 or $bwgrid[$i-1][$j] == -1){ // If a square has -1 to it's left or top, it's a clue. So give it a number!
-		          $cluenumber++;
-		          $numgrid[$i][$j] = $cluenumber;
-		        }
+			$newclues = $puzzle['newclues'];
  
-		        if ($bwgrid[$i][$j-1] == -1){ 
-		            array_push($across, array('cluenumber' => $cluenumber, 'cluetext' => array_shift($newclues)));
-		        }
-		         
-		        if ($bwgrid[$i-1][$j] == -1){ 
-		            array_push($down, array('cluenumber' => $cluenumber, 'cluetext' => array_shift($newclues))); 
-		        }
-		         
-		    }
-		 
+			$across = array();
+			$down = array();
+			$cluenumber = 0;
+			
+			for ($i = 1; $i <= $height; $i++) {
+			     
+			    for ($j = 1; $j <= $width; $j++) {
+			         
+			        if ($bwgrid[$i][$j] == '.'){ 
+			          $bwgrid[$i][$j] = -1 ;
+			          $numgrid[$i][$j] = -1;
+			        }
+	
+			        if ($bwgrid[$i][$j] == -1) {
+			            continue;
+			        }
+	
+			        if ($bwgrid[$i][$j-1] == -1 or $bwgrid[$i-1][$j] == -1){ // If a square has -1 to it's left or top, it's a clue. So give it a number!
+			          $cluenumber++;
+			          $numgrid[$i][$j] = $cluenumber;
+			        }
+	 
+			        if ($bwgrid[$i][$j-1] == -1){ 
+			            array_push($across, array('cluenumber' => $cluenumber, 'cluetext' => array_shift($newclues)));
+			        }
+			         
+			        if ($bwgrid[$i-1][$j] == -1){ 
+			            array_push($down, array('cluenumber' => $cluenumber, 'cluetext' => array_shift($newclues))); 
+			        }
+			         
+			    }
+			 
+			}
+		
 		}
 					
 		$meta = array(
-			'title' => $header['title'],
-			'author' => $header['author'],
-			'copyright' => htmlentities($header['copyright']),
+			'title' => $puzzle['header']['title'],
+			'author' => $puzzle['header']['author'],
+			'copyright' => htmlentities($puzzle['header']['copyright']),
 			'width' => $width,
 			'height' => $height
 		);
@@ -167,9 +171,33 @@ class Sources_model extends CI_Model {
 			'meta' => json_encode($meta),
 			'date' => date('Y-m-d')
 		);
-		
+				
 		return $data;
 		
+	}
+	
+	public function getPuzData($puzzledata) {
+		$puzzle = array();
+	
+		$dimdata = unpack("c2dim", substr($puzzledata, 0x2C, 2));
+		
+		$puzzle['meta']['width'] = $dimdata['dim1'];
+		$puzzle['meta']['height'] = $dimdata['dim2'];
+		
+		$width = $puzzle['meta']['width'];
+		$height = $puzzle['meta']['height'];
+		
+		$puzzle['answerstring'] = substr($puzzledata, 0x34, $width*$height); //Find the answers string
+		$puzzle['bwstring'] = substr($puzzledata, 0x34+$width*$height, $width*$height); //Find the crossword structure
+		$puzzle['cluestring'] = substr($puzzledata, 0x34+($width*$height+$width*$height)); //Find fhe clue string
+		
+		$puzzle['newclues'] = preg_split('/\0/', $puzzle['cluestring']);
+
+		$puzzle['header'] = array("title" => array_shift($puzzle['newclues']), "author" => array_shift($puzzle['newclues']), "copyright" => array_shift($puzzle['newclues']));
+		
+		$puzzle['filetype'] = 'puz';
+		
+		return $puzzle;
 	}
 	
 	public function convertJPZ($content) {
@@ -196,6 +224,100 @@ class Sources_model extends CI_Model {
 		
 		return $content;
 		
+	}
+	
+	public function getJPZData($puzzledata) {
+	
+		$jpzObject = $this->xmlToObject($puzzledata);
+	
+		$puzzledata = $jpzObject->{"rectangular-puzzle"};
+			
+		$puzzle = array();
+		
+		$puzzle['meta']['width'] = (string) $puzzledata->crossword->grid->attributes()->width;
+		$puzzle['meta']['height'] = (string) $puzzledata->crossword->grid->attributes()->height;
+		
+		$puzzle['header']['title'] = (string) $puzzledata->metadata->title;
+		$puzzle['header']['author'] = (string) $puzzledata->metadata->creator;
+		$puzzle['header']['copyright'] = (string) $puzzledata->metadata->copyright;
+		
+		//Time to make some strings!
+		
+		$puzzledataJson = json_encode($puzzledata);
+		$puzzledataArray = json_decode($puzzledataJson, TRUE);
+		
+		$bwstring = "";
+		$answerstring = "";
+				
+		for ($i = 1; $i <= $puzzle['meta']['height']; $i++) { // y value
+		
+			for ($j = 1; $j <= $puzzle['meta']['width']; $j++) { // x value
+			
+				foreach ($puzzledataArray['crossword']['grid']['cell'] as $cell) {
+				
+					if ($cell['@attributes']['x'] == $j && $cell['@attributes']['y'] == $i) {
+						
+						if (isset($cell['@attributes']['solution'])) {
+							
+							$bwstring .= '-';
+							$answerstring .= $cell['@attributes']['solution'];							
+						} elseif (isset($cell['@attributes']['type']) && $cell['@attributes']['type'] == 'block') {
+						
+							$bwstring .= '.';
+							$answerstring .= '.';	
+						
+						}
+						
+					}
+				
+				}	
+			
+			}
+		
+		}
+		
+		$across = array();
+		$down = array();
+		
+		$i = 0;
+		
+		foreach ($puzzledataArray['crossword']['clues'][0]['clue'] as $acrossclue) {
+		
+			$cluenumber = (string) $puzzledata->crossword->clues[0]->clue[$i]->attributes()->number;
+						
+			array_push($across, array('cluenumber' => $cluenumber, 'cluetext' => $acrossclue));
+			
+			$i++;
+		
+		}
+		
+		$i = 0;
+		
+		foreach ($puzzledataArray['crossword']['clues'][1]['clue'] as $acrossclue) {
+		
+			$cluenumber = (string) $puzzledata->crossword->clues[1]->clue[$i]->attributes()->number;
+						
+			array_push($down, array('cluenumber' => $cluenumber, 'cluetext' => $acrossclue));
+			
+			$i++;
+		
+		}
+		
+		$puzzle['across'] = $across;
+		$puzzle['down'] = $down;
+				
+		$puzzle['bwstring'] = $bwstring;
+		$puzzle['answerstring'] = $answerstring;
+		
+		$puzzle['filetype'] = 'jpz';
+		
+		return $puzzle;
+	}
+	
+	public function xmlToObject($xml) {
+		$xmlObject = simplexml_load_string($xml);
+		
+		return $xmlObject;
 	}
 	
 	public function unzip($file){ 
