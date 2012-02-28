@@ -241,6 +241,8 @@ class Sources_model extends CI_Model {
 		$puzzle['header']['author'] = (string) $puzzledata->metadata->creator;
 		$puzzle['header']['copyright'] = (string) $puzzledata->metadata->copyright;
 		
+		$puzzle['header']['copyright'] = substr($puzzle['header']['copyright'], 1);
+		
 		//Time to make some strings!
 		
 		$puzzledataJson = json_encode($puzzledata);
