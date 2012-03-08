@@ -93,7 +93,15 @@ class Auth extends CI_Controller
 					$data['captcha_html'] = $this->_create_captcha();
 				}
 			}
+			
+			$data['title'] = "WordMist Login";
+			
+			$data['js'] = array('jquery', 'bootstrap');	
+			$data['css'] = array('common', 'bootstrap');
+			
+			$this->load->view('templates/header', $data);
 			$this->load->view('auth/login_form', $data);
+			$this->load->view('templates/footer', $data);
 		}
 	}
 

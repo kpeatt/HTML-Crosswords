@@ -113,7 +113,7 @@ class Tank_auth
 		$this->delete_autologin();
 
 		// See http://codeigniter.com/forums/viewreply/662369/ as the reason for the next line
-		$this->ci->session->set_userdata(array('user_id' => '', 'username' => '', 'status' => ''));
+		$this->ci->session->set_userdata(array('user_id' => '', 'username' => '', 'status' => '', 'facebook_id' => '', 'twitter_id' => '', 'google_open_id' => '', 'yahoo_open_id'));
 
 		$this->ci->session->sess_destroy();
 	}

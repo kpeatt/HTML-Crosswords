@@ -2,6 +2,12 @@
 
 class auth_other extends CI_Controller 
 {	
+
+	var $fbuser_profile = "";
+	var $twitter_profile = "";
+	var $google_profile = "";
+	var $yahoo_profile = "";
+	
 	function __construct()
 	{
 		parent::__construct();
@@ -22,9 +28,9 @@ class auth_other extends CI_Controller
 		// get the facebook user and save in the session
 		$fb_user = $this->facebook->getUser();
 		if( isset($fb_user))
-		{
-			$this->session->set_userdata('facebook_id', $fb_user['id']);
-			$user = $this->user_model->get_user_by_sm(array('facebook_id' => $fb_user['id']), 'facebook_id');
+		{		
+			$this->session->set_userdata('facebook_id', $fb_user);
+			$user = $this->user_model->get_user_by_sm(array('facebook_id' => $fb_user), 'facebook_id');
 			if( sizeof($user) == 0) 
 			{ 
 				redirect('auth_other/fill_user_info', 'refresh'); 
@@ -142,8 +148,7 @@ class auth_other extends CI_Controller
     	// http://code.google.com/p/lightopenid/wiki/GettingMoreInformation
     	// for more
     	$required_attr = array('namePerson/friendly', 'contact/email', 
-    						   'namePerson/first', 'namePerson/last', 
-    						   'contact/country/home', 'contact/email', 'pref/language');
+    						   'namePerson/first', 'namePerson/last');
     	try 
     	{
 			if(!isset($_GET['openid_mode'])) 
@@ -171,12 +176,14 @@ class auth_other extends CI_Controller
     				
     				
 					$google_open_id = $lightopenid->identity;
+					$google_profile = $lightopenid->getAttributes();
 					$this->session->set_userdata('google_open_id', $google_open_id);	
 					    				
     				// does this user exist?
 					$user = $this->user_model->get_user_by_sm(array('google_open_id' => $google_open_id), 'google_open_id');
 					if( sizeof($user) == 0 ) 
 					{ 
+						$this->session->set_flashdata('google_profile', $google_profile);
 						redirect('auth_other/fill_user_info', 'refresh'); 
 					}
 					else
@@ -200,7 +207,7 @@ class auth_other extends CI_Controller
     	}
     }
     
-	// function for logging in via google open id
+	// function for logging in via Yahoo open id
     function yahoo_openid_signin()
     {
     	//$this->load->library('lightopenid'); // loaded in aotoload.php
@@ -210,8 +217,7 @@ class auth_other extends CI_Controller
     	// http://code.google.com/p/lightopenid/wiki/GettingMoreInformation
     	// for more
     	$required_attr = array('namePerson/friendly', 'contact/email', 
-    						   'namePerson/first', 'namePerson/last', 
-    						   'contact/country/home', 'contact/email', 'pref/language');
+    						   'namePerson/first', 'namePerson/last');
     	try 
     	{
 			if(!isset($_GET['openid_mode'])) 
@@ -277,9 +283,35 @@ class auth_other extends CI_Controller
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email|callback_email_check');
 		
 		// Run the validation
+		
 		if ($this->form_validation->run() == false ) 
 		{
-			$this->load->view('auth_other/fill_user_info'); 
+			if ($this->session->userdata('facebook_id')) {
+				$fb_user = $this->facebook->getUser();
+				
+				if( isset($fb_user) && !empty($gb_user) ) {
+					$fb_userprofile = $this->facebook->api('/me','GET');
+					$data['fbuser'] = $fb_userprofile;
+				}
+			}
+			
+			
+			if ($this->session->userdata('google_open_id')) {
+				
+				$google_profile = $this->session->flashdata('google_profile');
+				
+				print_r($google_profile);
+    			
+			}
+			
+			$data['title'] = "WordMist Login";
+			
+			$data['js'] = array('jquery', 'bootstrap');	
+			$data['css'] = array('common', 'bootstrap');
+			
+			$this->load->view('templates/header', $data); 
+			$this->load->view('auth_other/fill_user_info', $data); 
+			$this->load->view('templates/footer', $data);
 		}
 		else
 		{
@@ -298,19 +330,19 @@ class auth_other extends CI_Controller
 			{ 
 				$this->user_model->update_user_profile($user_id, array('facebook_id' => $this->session->userdata('facebook_id')));
 			}
-			else if( $this->session->userdata('twitter_id'))
+			if( $this->session->userdata('twitter_id'))
 			{
 				$this->user_model->update_user_profile($user_id, array('twitter_id' => $this->session->userdata('twitter_id')));
 			}
-			else if( $this->session->userdata('gfc_id'))
+			if( $this->session->userdata('gfc_id'))
 			{
 				$this->user_model->update_user_profile($user_id, array('gfc_id' => $this->session->userdata('gfc_id')));
 			}
-			else if( $this->session->userdata('google_open_id'))
+			if( $this->session->userdata('google_open_id'))
 			{
 				$this->user_model->update_user_profile($user_id, array('google_open_id' => $this->session->userdata('google_open_id')));
 			}
-			else if( $this->session->userdata('yahoo_open_id'))
+			if( $this->session->userdata('yahoo_open_id'))
 			{
 				$this->user_model->update_user_profile($user_id, array('yahoo_open_id' => $this->session->userdata('yahoo_open_id')));
 			}			
@@ -384,6 +416,11 @@ class auth_other extends CI_Controller
 		}
 		return $password;
 	}
+	
+	//generate a username for the user
+	function generate_username($seed);
+	
+	
 }
 
 /* End of file main.php */

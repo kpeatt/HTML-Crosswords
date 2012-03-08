@@ -9,6 +9,11 @@ class Puzzles extends CI_Controller {
 	}
 	
 	public function index()	{
+	
+		if (!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/login/');
+		}
+	
 		$data['puzzles'] = $this->puzzles_model->get_puzzle();
 		$data['title'] = 'Puzzles Collection';
 		

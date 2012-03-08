@@ -31,85 +31,6 @@ $captcha = array(
 	'maxlength'	=> 8,
 );
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" >
-	<head>
-		<title>XTA2 - CI Tank Auth Authentication with 3rd party plugins.</title>
-		<!-- google friend connect -->
-		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-		<script type="text/javascript">google.load('friendconnect', '0.8');</script>
-		<script type="text/javascript">
-			google.friendconnect.container.setParentUrl('/' /* location of rpc_relay.html and canvas.html */);
-			google.friendconnect.container.initOpenSocialApi({
-			  site: '<?php echo $this->config->item('google_app_id'); ?>',
-			  onload: function(securityToken) { initAllData(); }
-			});
-		
-			// main initialization function for google friend connect
-			function initAllData() 
-			{
-				var req = opensocial.newDataRequest();
-			  	req.add(req.newFetchPersonRequest("OWNER"), "owner_data");
-			  	req.add(req.newFetchPersonRequest("VIEWER"), "viewer_data");
-			  	var idspec = new opensocial.IdSpec({
-			      	'userId' : 'OWNER',
-			      	'groupId' : 'FRIENDS'
-			  	});
-			  	req.add(req.newFetchPeopleRequest(idspec), 'site_friends');
-			  	req.send(onData);
-			};
-			
-			// main function for handling user data
-			function onData(data) 
-			{
-			  	// getting the site data, we don't need this for now
-			  	//if (!data.get("owner_data").hadError()) 
-			  	//{
-			    //	var owner_data = data.get("owner_data").getData();
-			    //	document.getElementById("site-name").innerHTML = owner_data.getDisplayName();
-			    	//alert('user is logging in');
-			  	//}
-			
-			  	var viewer_info = document.getElementById("viewer-info");
-			  	if (data.get("viewer_data").hadError()) 
-			  	{
-			    	google.friendconnect.renderSignInButton({ 'id': 'gfc-button', 'text':'Click here to join', 'style': 'long' });
-			    	document.getElementById('gfc-button').style.display = 'block';
-			    	viewer_info.innerHTML = '';
-			    	//alert('there has been an error here');
-			  	} 
-			  	else 
-			  	{
-			    	document.getElementById('gfc-button').style.display = 'none';
-			    	var viewer = data.get("viewer_data").getData();
-			    	//viewer_info.innerHTML = "Hello, " + viewer.getDisplayName() + " " +
-			        //						"<a href='#' onclick='google.friendconnect.requestSettings()'>Settings</a> | " +
-					//				        "<a href='#' onclick='google.friendconnect.requestInvite()'>Invite</a> | " +
-					//				        "<a href='#' onclick='google.friendconnect.requestSignOut()'>Sign out</a>";
-					//alert('user has been loaded');
-					//alert(viewer.getDisplayName());
-					//alert(viewer.getId());
-					
-					// let's redirect the user to our login_google action in auth_other controller
-					window.location = "<?php echo site_url('auth_other/gfc_signin/'); ?>" + "/" + viewer.getId();
-			  	}
-			
-				// for displaying friends, but we don't need this for now
-			  	//if (!data.get("site_friends").hadError()) 
-			  	//{
-			    //	var site_friends = data.get("site_friends").getData();
-			    //	var list = document.getElementById("friends-list");
-			    //	list.innerHTML = "";
-			    //	site_friends.each(function(friend) 
-			    //	{
-			    // 		list.innerHTML += "<li>" + friend.getDisplayName() + "</li>";
-			    //	});
-			  	//}
-			};
-		</script>
-	</head>
-	
-	<body>
 		<table><tr>
 			<td><h4><?php echo anchor('/', 'XTA2 DEMO'); ?></h4></td>
 			<td><h4><?php echo anchor('welcome/about', 'About + Discuss'); ?></h4></td>
@@ -183,25 +104,21 @@ $captcha = array(
 		<table>
 			<tr>
 				<td>
-					<fb:login-button v="2" perms="" length="long" onlogin='window.location="https://graph.facebook.com/oauth/authorize?client_id=<?php echo $this->config->item('appId'); ?>&redirect_uri=<?php echo site_url('auth_other/fb_signin'); ?>&amp;r="+window.location.href;'></fb:login-button>
+					<fb:login-button v="2" perms="" length="long" onlogin='window.location="https://graph.facebook.com/oauth/authorize?client_id=<?php echo $this->config->item('appId'); ?>&redirect_uri=<?php echo site_url('auth_other/fb_signin'); ?>&scope=email&amp;r="+window.location.href;'></fb:login-button>
 				</td>
 				<td>
 					<a class="twitter" href="<?php echo site_url('auth_other/twitter_signin'); ?>">
-						<img style="margin-top:5px;" src="<?php echo base_url(); ?>images/twitter_login_button.gif" alt="twitter login" border="0"/>
+						<img style="margin-top:5px;" src="<?php echo base_url(); ?>img/twitter_login_button.gif" alt="twitter login" border="0"/>
 					</a>
-				</td>
-				<td>
-					<div id="gfc-button"></div>
-					(Google Friend Connect)
-				</td>				
+				</td>		
 				<td>
 					<a href="<?php echo site_url('auth_other/google_openid_signin'); ?>">
-						<img style="margin-top:5px;" src="<?php echo base_url(); ?>images/google_connect_button.png" alt="google open id" border="0"/>
+						<img style="margin-top:5px;" src="<?php echo base_url(); ?>img/google_connect_button.png" alt="google open id" border="0"/>
 					</a>
 				</td>
 				<td>
 					<a href="<?php echo site_url('auth_other/yahoo_openid_signin'); ?>">
-						<img style="margin-top:5px;" src="<?php echo base_url(); ?>images/yahoo_openid_connect.png" alt="yahoo open id" border="0"/>
+						<img style="margin-top:5px;" src="<?php echo base_url(); ?>img/yahoo_openid_connect.png" alt="yahoo open id" border="0"/>
 					</a>
 				</td>				
 			</tr>
@@ -225,5 +142,3 @@ $captcha = array(
 		    	}
 		  	});
 		</script>
-	</body>
-</html>
