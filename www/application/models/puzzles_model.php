@@ -60,10 +60,10 @@ class Puzzles_model extends CI_Model {
                     $html .= "\n\t\t<td class='black'></td>";
                     $k++;
                 } else if ($numgrid[$i][$j] > 0) { // It's a clue!
-                    $html .= "\n\t\t<td class='space'><div class='wrapper'><div class='number'>".$numgrid[$i][$j]."</div><input type='text' class='answer' maxlength='1' rel='[".$i."][".$j."]' id='cell_".$k."'></div></td>";
+                    $html .= "\n\t\t<td class='space'><div class='wrapper'><div class='number'>".$numgrid[$i][$j]."</div><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."' id='cell_".$k."'></div></td>";
                     $k++;
                 } else { // It's a blank square!
-                    $html .= "\n\t\t<td class='space'><div class='wrapper'><input type='text' class='answer' maxlength='1' rel='[".$i."][".$j."]' id='cell_".$k."'></div></td>";
+                    $html .= "\n\t\t<td class='space'><div class='wrapper'><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."'  id='cell_".$k."'></div></td>";
                     $k++;
                 }
             }

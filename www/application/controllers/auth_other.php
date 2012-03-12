@@ -417,10 +417,6 @@ class auth_other extends CI_Controller
 		return $password;
 	}
 	
-	//generate a username for the user
-	function generate_username($seed);
-	
-	
 }
 
 /* End of file main.php */

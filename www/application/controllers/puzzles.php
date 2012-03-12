@@ -19,9 +19,9 @@ class Puzzles extends CI_Controller {
 		
 		$data['puzzle'] = '';
 		
-		$data['js'] = array('jquery', 'bootstrap', 'crosswordview');	
+		$data['js'] = array('jquery', 'bootstrap');	
 		$data['css'] = array('common', 'bootstrap');
-					
+									
 		$this->load->view('templates/header', $data);
 		$this->load->view('puzzles/index', $data);
 		$this->load->view('templates/footer', $data);
