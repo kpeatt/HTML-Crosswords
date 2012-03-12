@@ -54,11 +54,12 @@ body {
     text-align: center;
     font-size: 18px;
     text-transform:uppercase;
+    background: none;
 }
  
 #puzzle input.answer:focus {
-    background: lightCyan;
-    outline: 1px solid lightCyan;
+    background: Cyan;
+    outline: 1px solid Cyan;
     outline-offset: 0;
 }
  
@@ -68,6 +69,10 @@ body {
  
 #puzzle input.wrong {
     background: salmon;
+}
+
+#puzzle td.hilite {
+	background: lightCyan;
 }
 
 

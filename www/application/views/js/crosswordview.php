@@ -30,11 +30,13 @@
         	} else {
         		direction = 'across';
         	}
+        	
+        	alert(direction);
         
         });
         
 		$('input.answer').focus(function() {  // Highlight clue spaces
-		        	        	        		
+		      	        	        		
 		    $('#puzzle td').removeClass('hilite');
 		    
 		    if (direction == 'across') {
@@ -43,7 +45,39 @@
 				$(this).closest('td').prevUntil('td.black').addClass('hilite');
 			} else { 
 			
+				var cellY = parseInt($(this).attr('celly'));
+				var cellX = parseInt($(this).attr('cellx'));
+								
+				var hiliteCellUp = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+				var hiliteCellDown = hiliteCellUp;
+				
+				while (hiliteCellUp.length > 0) {
+					cellY = cellY - 1;
+					hiliteCellUp = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+					hiliteCellUp.closest('td').addClass('hilite');
+					
+					if (cellY <= 0) {
+						break;
+					}
+				}
+				
+				while (hiliteCellDown.length > 0) {
+					cellY = cellY + 1;
+					hiliteCellDown = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+					hiliteCellDown.closest('td').addClass('hilite');
+					
+					if (cellY > <?php echo $puzzle['meta']['height']; ?>) {
+						break;
+					}
+				}
+			
 			}
+			
+		});
+		
+		$('input.answer').blur(function() { // Remove highlight
+			
+			$('#puzzle td').removeClass('hilite');
 			
 		});
 
@@ -171,8 +205,6 @@
 		        		        	
 	        		        
 		    }
-		    
-		    
 		    
 		    activeCell.focus();
 	    
