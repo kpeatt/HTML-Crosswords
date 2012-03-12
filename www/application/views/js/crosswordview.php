@@ -41,15 +41,13 @@
 			    $(this).closest('td').addClass('hilite');
 				$(this).closest('td').nextUntil('td.black').addClass('hilite');
 				$(this).closest('td').prevUntil('td.black').addClass('hilite');
-			} else { // Need to figure out how to do down clues
-			
-				
+			} else { 
 			
 			}
 			
 		});
 
-		$('input.answer').keydown(function(e) {
+		$('input.answer').keydown(function(e) { //Keyboard Navigation
 		
 			var activeCell = $(this);
 			var cellX = parseInt($(this).attr('cellx'));
@@ -88,7 +86,14 @@
 			       	
 			       	while (activeCell.length == 0) {
 						cellY = cellY - 1;
+						
+						if (cellY <= 0) {
+							cellY = 1;
+							break;
+						}
+						
 						activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+
 					}
 								       	
 					break;
@@ -124,6 +129,12 @@
 			       	
 			       	while (activeCell.length == 0) {
 						cellY = cellY + 1;
+						
+						if (cellY > <?php echo $puzzle['meta']['width']; ?>) {
+							cellY = <?php echo $puzzle['meta']['width']; ?>;
+							break;
+						}
+						
 						activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
 					}
 			       	
@@ -141,9 +152,13 @@
 						activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
 						
 						if (activeCell.length == 0) {
+						
 							$(this).closest('td').prevUntil('td.space').each(function(i) {
 								cellX = cellX - 1;
 							});
+							
+							activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+							
 						}
 						
 						if (cellX <= 0) {
