@@ -31,22 +31,23 @@
         		direction = 'across';
         	}
         	
-        	alert(direction);
-        
+        	hiliteClue($(this));
+        	$(this).focus();
+        	        
         });
         
-		$('input.answer').focus(function() {  // Highlight clue spaces
-		      	        	        		
-		    $('#puzzle td').removeClass('hilite');
+        var hiliteClue = function(item) {
 		    
-		    if (direction == 'across') {
-			    $(this).closest('td').addClass('hilite');
-				$(this).closest('td').nextUntil('td.black').addClass('hilite');
-				$(this).closest('td').prevUntil('td.black').addClass('hilite');
+	    	$('#puzzle td').removeClass('hilite');
+	    
+	    	if (direction == 'across') {
+			    item.closest('td').addClass('hilite');
+				item.closest('td').nextUntil('td.black').addClass('hilite');
+				item.closest('td').prevUntil('td.black').addClass('hilite');
 			} else { 
 			
-				var cellY = parseInt($(this).attr('celly'));
-				var cellX = parseInt($(this).attr('cellx'));
+				var cellY = parseInt(item.attr('celly'));
+				var cellX = parseInt(item.attr('cellx'));
 								
 				var hiliteCellUp = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
 				var hiliteCellDown = hiliteCellUp;
@@ -72,7 +73,13 @@
 				}
 			
 			}
-			
+	    
+	    }
+        
+		$('input.answer').focus(function() {  // Highlight clue spaces
+		      	        	        		
+    		hiliteClue($(this));
+		    			
 		});
 		
 		$('input.answer').blur(function() { // Remove highlight
@@ -206,8 +213,9 @@
 	        		        
 		    }
 		    
-		    activeCell.focus();
-	    
+		    activeCell.focus();	    
+		    hiliteClue(activeCell);
+
 	    });
             
     });
