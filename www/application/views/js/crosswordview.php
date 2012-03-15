@@ -280,10 +280,28 @@
 	        		        
 		    }
 		    
-		    if ($(this).val().length >= 1) {
+		    if (($(this).val().length == 0) && (event.keyCode >= 65 && event.keyCode <= 90)) {
+		    
+		    	$(this).val(String.fromCharCode(event.keyCode));
 		    	
 		    	if (direction == 'across') {
 		    		activeCell = rightCell($(this));
+		    	} else if (direction == 'down') {
+		    		activeCell = downCell($(this));
+		    	}
+		    	
+		    	if(e.preventDefault) {
+	                e.preventDefault();
+	            }
+		    }
+		    
+		    if (($(this).val().length >= 1) && (event.keyCode >= 65 && event.keyCode <= 90)) {
+		    	
+		    	$(this).val(String.fromCharCode(event.keyCode));
+		    	
+		    	if (direction == 'across') {
+		    		activeCell = rightCell($(this));
+		    		
 		    	} else if (direction == 'down') {
 		    		activeCell = downCell($(this));
 		    	}
