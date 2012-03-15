@@ -93,6 +93,116 @@
 			$('#puzzle td').removeClass('hilite');
 			
 		});
+		
+		var leftCell = function(item) { // Move cell to the left
+		
+			var activeCell = item;
+		
+			var cellX = parseInt(item.attr('cellx'));
+			var cellY = parseInt(item.attr('celly'));
+			
+			cellX = cellX - 1;
+					
+			activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+						
+			if (activeCell.length == 0) {
+				
+				item.closest('td').prevUntil('td.space').each(function(i) {
+					cellX = cellX - 1;
+				});
+				
+				activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+								
+			}
+			
+			if (cellX <= 0) {
+				activeCell = item.closest('tr').prev('tr').find('td.space:last input.answer');
+			}
+			
+			return activeCell;
+			
+		}
+		
+		var rightCell = function(item) { // Move cell right
+		
+			var activeCell = item;
+		
+			var cellX = parseInt(item.attr('cellx'));
+			var cellY = parseInt(item.attr('celly'));
+		
+			cellX = cellX + 1;
+					
+			activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+			
+			if (activeCell.length == 0) {
+			
+				item.closest('td').nextUntil('td.space').each(function(i) {
+					cellX = cellX + 1;
+				});
+				
+				activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+			}
+			
+			if (cellX > <?php echo $puzzle['meta']['width']; ?>) {
+				activeCell = item.closest('tr').next('tr').find('td.space:first input.answer');
+			}
+			
+			return activeCell;
+		
+		}
+		
+		var upCell = function(item) { // Move cell up
+		
+			var activeCell = item;
+		
+			var cellX = parseInt(item.attr('cellx'));
+			var cellY = parseInt(item.attr('celly'));
+			
+			cellY = cellY - 1;
+			        
+	        activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+	       	
+	       	while (activeCell.length == 0) {
+				cellY = cellY - 1;
+				
+				if (cellY <= 0) {
+					cellY = 1;
+					break;
+				}
+				
+				activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+
+			}
+			
+			return activeCell;
+			
+		}
+		
+		var downCell = function(item) { // Move cell down
+		
+			var activeCell = item;
+		
+			var cellX = parseInt(item.attr('cellx'));
+			var cellY = parseInt(item.attr('celly'));
+			
+			cellY = cellY + 1;
+			       	
+	       	activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+	       	
+	       	while (activeCell.length == 0) {
+				cellY = cellY + 1;
+				
+				if (cellY > <?php echo $puzzle['meta']['width']; ?>) {
+					cellY = <?php echo $puzzle['meta']['width']; ?>;
+					break;
+				}
+				
+				activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
+			}
+			
+			return activeCell;
+			
+		}
 
 		$('input.answer').keydown(function(e) { //Keyboard Navigation
 		
@@ -101,89 +211,28 @@
 			var cellY = parseInt($(this).attr('celly'));
 				 
 			switch(e.keyCode) {
-				case 37:
-					// Left
+				case 37: // Left
 					
-					cellX = cellX - 1;
-					
-					activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
-					
-					if (activeCell.length == 0) {
-						
-						$(this).closest('td').prevUntil('td.space').each(function(i) {
-							cellX = cellX - 1;
-						});
-						
-						activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
-						
-					}
-					
-					if (cellX <= 0) {
-						activeCell = $(this).closest('tr').prev('tr').find('td.space:last input.answer');
-					}
+					activeCell = leftCell($(this));
 					
 			    	break;
 		    	
-		    	case 38:
-			        // Up
+		    	case 38: // Up
 			        
-			        cellY = cellY - 1;
-			        
-			        activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
-			       	
-			       	while (activeCell.length == 0) {
-						cellY = cellY - 1;
-						
-						if (cellY <= 0) {
-							cellY = 1;
-							break;
-						}
-						
-						activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
-
-					}
+			        activeCell = upCell($(this));
 								       	
 					break;
 					
-				case 39:
-					// Right
+				case 39: // Right
 					
-					cellX = cellX + 1;
-					
-					activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
-					
-					if (activeCell.length == 0) {
-					
-						$(this).closest('td').nextUntil('td.space').each(function(i) {
-							cellX = cellX + 1;
-						});
-						
-						activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
-					}
-					
-					if (cellX > <?php echo $puzzle['meta']['width']; ?>) {
-						activeCell = $(this).closest('tr').next('tr').find('td.space:first input.answer');
-					}
+					activeCell = rightCell($(this));
 					
 			    	break;
 			    	
 			    case 40:
 			        // Down
 			        
-			        cellY = cellY + 1;
-			       	
-			       	activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
-			       	
-			       	while (activeCell.length == 0) {
-						cellY = cellY + 1;
-						
-						if (cellY > <?php echo $puzzle['meta']['width']; ?>) {
-							cellY = <?php echo $puzzle['meta']['width']; ?>;
-							break;
-						}
-						
-						activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
-					}
+			   		activeCell = downCell($(this));
 			       	
 					break;
 					
@@ -192,37 +241,61 @@
 					
 					if ($(this).val() != '') {
 						$(this).val('');
-					}
-					
-					else {
-						cellX = cellX - 1;
-						activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
-						
-						if (activeCell.length == 0) {
-						
-							$(this).closest('td').prevUntil('td.space').each(function(i) {
-								cellX = cellX - 1;
-							});
-							
-							activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
-							
-						}
-						
-						if (cellX <= 0) {
-							activeCell = $(this).closest('tr').prev('tr').find('td.space:last input.answer');
-						}
+					} else {
+						if (direction == 'across') {
+				    		activeCell = leftCell($(this));
+				    	} else if (direction == 'down') {
+				    		activeCell = upCell($(this));
+				    	}
 					}
 					
 					break;
 			    
-		        		        	
+			    case 9:
+					// Tab
+					
+					if (!event.shiftKey) {
+						
+						if (direction == 'down') {
+				    		activeCell = downCell($(this));
+				    		
+				    		if(e.preventDefault) {
+				                e.preventDefault();
+				            }
+				    	}
+						
+					} else {
+					
+						if (direction == 'down') {
+				    		activeCell = upCell($(this));
+				    		
+				    		if(e.preventDefault) {
+				                e.preventDefault();
+				            }
+				    	}
+					
+					}
+			    				
+					break;	        		        	
 	        		        
+		    }
+		    
+		    if ($(this).val().length >= 1) {
+		    	
+		    	if (direction == 'across') {
+		    		activeCell = rightCell($(this));
+		    	} else if (direction == 'down') {
+		    		activeCell = downCell($(this));
+		    	}
+		    	
 		    }
 		    
 		    activeCell.focus();	    
 		    hiliteClue(activeCell);
 
 	    });
+	    
+	    
             
     });
     

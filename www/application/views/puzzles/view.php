@@ -58,7 +58,7 @@
 				         
 				            $i = 0; foreach($puzzle['across'] as $clue) {
 				             
-				             	if(isset($clue['cluetext']) && !empty($clue['cluetext'])) {
+				             	if(isset($clue['cluetext']) || isset($clue['cluenumber'])) {
 				             
 				                    echo "\n\t\t\t<li value='".$clue['cluenumber']."'>".$clue['cluetext']."</li>";
 				                    
@@ -81,7 +81,7 @@
 				         
 				            $i = 0; foreach($puzzle['down'] as $clue) {
 				             
-				             	if(isset($clue['cluetext']) && !empty($clue['cluetext'])) {
+				             	if(isset($clue['cluetext']) || isset($clue['cluenumber'])) {
 				             
 				                    echo "\n\t\t\t<li value='".$clue['cluenumber']."'>".$clue['cluetext']."</li>";
 				                    
