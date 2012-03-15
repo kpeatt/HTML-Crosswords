@@ -189,7 +189,7 @@ class Sources_model extends CI_Model {
 		
 		$puzzle['answerstring'] = substr($puzzledata, 0x34, $width*$height); //Find the answers string
 		$puzzle['bwstring'] = substr($puzzledata, 0x34+$width*$height, $width*$height); //Find the crossword structure
-		$puzzle['cluestring'] = substr($puzzledata, 0x34+($width*$height+$width*$height)); //Find fhe clue string
+		$puzzle['cluestring'] = utf8_encode(substr($puzzledata, 0x34+($width*$height+$width*$height))); //Find fhe clue string
 		
 		$puzzle['newclues'] = preg_split('/\0/', $puzzle['cluestring']);
 
