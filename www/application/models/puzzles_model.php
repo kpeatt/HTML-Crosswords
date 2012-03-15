@@ -43,7 +43,8 @@ class Puzzles_model extends CI_Model {
 		
 		$bwgrid = $puzzleGrids['bwgrid'];
 		$numgrid = $puzzleGrids['numgrid'];
-		
+		$cluenumgrid = $puzzleGrids['cluenumgrid'];
+				
 		///Time to render the HTML!
 		
 		$html = "<table>";
@@ -60,10 +61,10 @@ class Puzzles_model extends CI_Model {
                     $html .= "\n\t\t<td class='black'></td>";
                     $k++;
                 } else if ($numgrid[$i][$j] > 0) { // It's a clue!
-                    $html .= "\n\t\t<td class='space'><div class='wrapper'><div class='number'>".$numgrid[$i][$j]."</div><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."' id='cell_".$k."'></div></td>";
+                    $html .= "\n\t\t<td class='space'><div class='wrapper'><div class='number'>".$numgrid[$i][$j]."</div><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."' id='cell_".$k."' across='".$cluenumgrid['across'][$i][$j]."' down='".$cluenumgrid['down'][$i][$j]."'></div></td>";
                     $k++;
                 } else { // It's a blank square!
-                    $html .= "\n\t\t<td class='space'><div class='wrapper'><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."'  id='cell_".$k."'></div></td>";
+                    $html .= "\n\t\t<td class='space'><div class='wrapper'><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."'  id='cell_".$k."' across='".$cluenumgrid['across'][$i][$j]."' down='".$cluenumgrid['down'][$i][$j]."'></div></td>";
                     $k++;
                 }
             }
@@ -92,6 +93,7 @@ class Puzzles_model extends CI_Model {
 		
 		$bwgrid = array();
 		$numgrid = array();
+		$cluenumgrid = array();
 		
 		for ($i = 0; $i < $height; $i++) { // Make a 2d array of structure
 		    $bwgrid[$i] = str_split(substr($bwstring, $i*$width, $width));
@@ -128,6 +130,10 @@ class Puzzles_model extends CI_Model {
 		}
 		
 		$cluenumber = 0; //Now to do some clue numbering!
+		$acrosscluenumber = 0;
+		$downcluenumber = 0;
+		$acrossspace = 0;
+		$downspace = 0;
  
 		for ($i = 1; $i <= $height; $i++) {
 		     
@@ -144,14 +150,51 @@ class Puzzles_model extends CI_Model {
 		         
 		        if ($bwgrid[$i][$j-1] == -1 or $bwgrid[$i-1][$j] == -1){ // If a square has -1 to it's left or top, it's a clue. So give it a number!
 		          $cluenumber++;
-		          $numgrid[$i][$j] = $cluenumber;
+		          $numgrid[$i][$j] = $cluenumber; 
 		        }
+		        
+		        if ($bwgrid[$i][$j-1] == -1) { // This is an across clue
+		        	
+		        	$acrosscluenumber++;
+		        	$acrosscluenumber = $acrossspace + $acrosscluenumber;
+		        	
+		        	$cluenumgrid['across'][$i][$j] = $acrosscluenumber;
+		        	
+		        	$acrossspace = 0;
+		        }
+		        
+		        if ($bwgrid[$i-1][$j] == -1 && $bwgrid[$i][$j-1] != -1) { // This is a down clue and not an across clue
+		        	$acrossspace++;
+		        }
+		        
+		        if ($bwgrid[$i][$j] == '-' && $bwgrid[$i][$j-1] != -1) { //Check if it's a space and not a clue and increment
+		        	$cluenumgrid['across'][$i][$j] = $acrosscluenumber;
+	        	}
+	        	
+	        	if ($bwgrid[$i-1][$j] == -1) { // This is a down clue
+		        	
+		        	$downcluenumber++;
+		        	$downcluenumber = $downspace + $downcluenumber;
+		        	
+		        	$cluenumgrid['down'][$i][$j] = $downcluenumber;
+		        	
+		        	$downspace = 0;
+		        	
+		        }
+		        
+		        if ($bwgrid[$i][$j-1] == -1 && $bwgrid[$i-1][$j] != -1) { // This is an across clue and not a down clue
+		        	$downspace++;
+		        }
+		        
+		        if ($bwgrid[$i][$j] == '-' && $bwgrid[$i-1][$j] != -1) { //Check if it's a space and not a clue and increment
+		        	$cluenumgrid['down'][$i][$j] = $cluenumgrid['down'][$i-1][$j];
+	        	}
 		         
 		    }
 		 
 		}
 		
-		$puzzleGrids = array('bwgrid' => $bwgrid, 'numgrid' => $numgrid, 'answergrid' => $answergrid);
+		$puzzleGrids = array('bwgrid' => $bwgrid, 'numgrid' => $numgrid, 'answergrid' => $answergrid, 'cluenumgrid' => $cluenumgrid);
 				
 		return $puzzleGrids;
 		

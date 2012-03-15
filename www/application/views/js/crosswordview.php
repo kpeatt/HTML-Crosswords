@@ -39,11 +39,15 @@
         var hiliteClue = function(item) {
 		    
 	    	$('#puzzle td').removeClass('hilite');
+	    	$('#clues li').removeClass('active');
 	    
 	    	if (direction == 'across') {
 			    item.closest('td').addClass('hilite');
 				item.closest('td').nextUntil('td.black').addClass('hilite');
 				item.closest('td').prevUntil('td.black').addClass('hilite');
+				
+				$('#clues .across').find('li[value="'+item.attr('across')+'"]').addClass('active');
+				
 			} else { 
 			
 				var cellY = parseInt(item.attr('celly'));
@@ -71,6 +75,8 @@
 						break;
 					}
 				}
+				
+				$('#clues .down').find('li[value="'+item.attr('down')+'"]').addClass('active');
 			
 			}
 	    
