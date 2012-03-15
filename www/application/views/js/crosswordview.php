@@ -209,6 +209,10 @@
 			var activeCell = $(this);
 			var cellX = parseInt($(this).attr('cellx'));
 			var cellY = parseInt($(this).attr('celly'));
+			
+			if (e.metaKey) {
+				exit;
+			}
 				 
 			switch(e.keyCode) {
 				case 37: // Left
