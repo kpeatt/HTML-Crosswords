@@ -280,9 +280,9 @@
 	        		        
 		    }
 		    
-		    if (($(this).val().length == 0) && (event.keyCode >= 65 && event.keyCode <= 90)) {
+		    if (($(this).val().length == 0) && (e.keyCode >= 65 && e.keyCode <= 90)) {
 		    
-		    	$(this).val(String.fromCharCode(event.keyCode));
+		    	$(this).val(String.fromCharCode(e.keyCode));
 		    	
 		    	if (direction == 'across') {
 		    		activeCell = rightCell($(this));
@@ -295,9 +295,9 @@
 	            }
 		    }
 		    
-		    if (($(this).val().length >= 1) && (event.keyCode >= 65 && event.keyCode <= 90)) {
+		    if (($(this).val().length >= 1) && (e.keyCode >= 65 && e.keyCode <= 90)) {
 		    	
-		    	$(this).val(String.fromCharCode(event.keyCode));
+		    	$(this).val(String.fromCharCode(e.keyCode));
 		    	
 		    	if (direction == 'across') {
 		    		activeCell = rightCell($(this));
