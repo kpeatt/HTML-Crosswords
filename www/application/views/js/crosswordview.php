@@ -317,6 +317,23 @@
 
 	    });
 	    
+	    var findCellfromClue = function(item) {
+	    	
+	    	direction = item.closest('div').attr('class').split(' ')[0];
+	    	var clueNumber = item.attr('value');
+	    	
+	    	activeCell = $('#puzzle').find('input['+direction+'='+clueNumber+']').first();
+	    		    	
+	    	return direction;
+	    	return activeCell;
+	    }
+	    
+	    $('#clues li').click(function() {
+	    	findCellfromClue($(this));
+	    	
+	    	activeCell.focus();	    
+		    hiliteClue(activeCell);
+	    });
 	    
             
     });
