@@ -259,10 +259,17 @@
 					// Tab
 					
 					if (!event.shiftKey) {
+					
+						
 						
 						if (direction == 'down') {
 				    		activeCell = downCell($(this));
 				    		
+				    		if(e.preventDefault) {
+				                e.preventDefault();
+				            }
+				    	} else {
+				    		activeCell = rightCell($(this));
 				    		if(e.preventDefault) {
 				                e.preventDefault();
 				            }
@@ -273,6 +280,11 @@
 						if (direction == 'down') {
 				    		activeCell = upCell($(this));
 				    		
+				    		if(e.preventDefault) {
+				                e.preventDefault();
+				            }
+				    	} else {
+				    		activeCell = leftCell($(this));
 				    		if(e.preventDefault) {
 				                e.preventDefault();
 				            }
@@ -344,6 +356,8 @@
 	    	activeCell.focus();	    
 		    hiliteClue(activeCell);
 	    });
+	    
+	    
 	    
             
     });
