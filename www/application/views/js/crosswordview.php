@@ -316,6 +316,12 @@
 		    	
 		    }
 		    
+		    if (!(e.keyCode >= 65 && e.keyCode <= 90)) {
+		    	if(e.preventDefault) {
+	                e.preventDefault();
+	            }
+		    }
+		    
 		    activeCell.focus();	    
 		    hiliteClue(activeCell);
 
