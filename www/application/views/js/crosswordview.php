@@ -71,7 +71,7 @@
 					hiliteCellDown = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
 					hiliteCellDown.closest('td').addClass('hilite');
 					
-					if (cellY > <?php echo $puzzle['meta']['height']; ?>) {
+					if (cellY > $('#puzzle tr').length) {
 						break;
 					}
 				}
@@ -143,7 +143,7 @@
 				activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
 			}
 			
-			if (cellX > <?php echo $puzzle['meta']['width']; ?>) {
+			if (cellX > $('#puzzle tr').length) {
 				activeCell = item.closest('tr').next('tr').find('td.space:first input.answer');
 			}
 			
@@ -192,8 +192,8 @@
 	       	while (activeCell.length == 0) {
 				cellY = cellY + 1;
 				
-				if (cellY > <?php echo $puzzle['meta']['width']; ?>) {
-					cellY = <?php echo $puzzle['meta']['width']; ?>;
+				if (cellY > $('#puzzle tr').length) {
+					cellY = $('#puzzle tr').length;
 					break;
 				}
 				
@@ -309,6 +309,10 @@
 		    	} else if (direction == 'down') {
 		    		activeCell = downCell($(this));
 		    	}
+		    	
+		    	if(e.preventDefault) {
+	                e.preventDefault();
+	            }
 		    	
 		    }
 		    
