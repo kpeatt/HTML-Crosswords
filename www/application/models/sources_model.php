@@ -189,8 +189,16 @@ class Sources_model extends CI_Model {
 		
 		$puzzle['answerstring'] = substr($puzzledata, 0x34, $width*$height); //Find the answers string
 		$puzzle['bwstring'] = substr($puzzledata, 0x34+$width*$height, $width*$height); //Find the crossword structure
-		$puzzle['cluestring'] = utf8_encode(substr($puzzledata, 0x34+($width*$height+$width*$height))); //Find fhe clue string
+		$puzzle['cluestring'] = substr($puzzledata, 0x34+($width*$height+$width*$height)); //Find fhe clue string
 		
+		$isUTF = mb_detect_encoding($puzzle['cluestring'], 'UTF-8', true); // Check if cluestring is UTF-8
+		
+		if (!$isUTF) {
+		
+			$puzzle['cluestring'] = utf8_encode($puzzle['cluestring']);
+		
+		}
+				
 		$puzzle['newclues'] = preg_split('/\0/', $puzzle['cluestring']);
 
 		$puzzle['header'] = array("title" => array_shift($puzzle['newclues']), "author" => array_shift($puzzle['newclues']), "copyright" => array_shift($puzzle['newclues']));

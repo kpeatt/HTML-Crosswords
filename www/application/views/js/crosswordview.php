@@ -18,6 +18,9 @@
             } else {
                 $(this).removeClass('right').addClass('wrong');
             }
+            
+            $('#puzzle td').removeClass('hilite'); // Remove highlights
+			$('#clues li').removeClass('active');
              
         });
         
@@ -86,12 +89,6 @@
 		      	        	        		
     		hiliteClue($(this));
 		    			
-		});
-		
-		$('input.answer').blur(function() { // Remove highlight
-			
-			$('#puzzle td').removeClass('hilite');
-			
 		});
 		
 		var leftCell = function(item) { // Move cell to the left
@@ -259,8 +256,6 @@
 					// Tab
 					
 					if (!event.shiftKey) {
-					
-						
 						
 						if (direction == 'down') {
 				    		activeCell = downCell($(this));
