@@ -33,7 +33,8 @@
         	} else {
         		direction = 'across';
         	}
-        	
+        	        	
+        	updateCurrentCluefromCell($(this));
         	hiliteClue($(this));
         	$(this).focus();
         	        
@@ -379,6 +380,12 @@
 	    	
 	    	$('.current-clue span.number').html(clueNumber);
 	    	$('.current-clue span.text').html(clueText);
+	    	
+	    	if (direction == 'across') {
+	    		$('.current-clue span.direction i').attr('class', 'icon-arrow-right');
+	    	} else {
+	    		$('.current-clue span.direction i').attr('class', 'icon-arrow-down');
+	    	}
 	    	
 	    }
 	    
