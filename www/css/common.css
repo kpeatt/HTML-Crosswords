@@ -25,7 +25,7 @@ body {
     position: relative;
 }
  
-#puzzle .number {
+#puzzle td .number {
     font-size: 12px;
     top: 0;
     position: absolute;
@@ -75,8 +75,16 @@ body {
 	background: lightCyan;
 }
 
+#clues li {
+	cursor: pointer;
+}
+
 #clues li.active {
 	background: lightYellow;
+}
+
+.current-clue .direction i {
+	vertical-align: baseline;
 }
 
 

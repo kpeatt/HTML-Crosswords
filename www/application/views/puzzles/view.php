@@ -26,6 +26,13 @@
 	<div class="row-fluid">
 		
 		<div id="puzzle" class="span6">
+			<div class="well current-clue">
+				<h2>
+					<span class="direction"><i class="icon-arrow-right"></i> </span>
+					<span class="number"><?php echo $puzzle['across'][0]['cluenumber']; ?></span>. <span class="text"><?php echo $puzzle['across'][0]['cluetext']; ?></span>
+				</h2>
+			</div>
+		
 			<?php echo $html; ?>
 		</div>
 	

@@ -88,6 +88,7 @@
 		$('input.answer').focus(function() {  // Highlight clue spaces
 		      	        	        		
     		hiliteClue($(this));
+    		updateCurrentCluefromCell($(this));
 		    			
 		});
 		
@@ -331,6 +332,7 @@
 		    
 		    activeCell.focus();	    
 		    hiliteClue(activeCell);
+		    updateCurrentCluefromCell(activeCell);
 
 	    });
 	    
@@ -345,8 +347,44 @@
 	    	return activeCell;
 	    }
 	    
+	    var findCluefromCell = function(item) {
+	    	activeClue = $('#clues .'+direction).find('li[value="'+item.attr(direction)+'"]');
+	    	
+	    	return activeClue;
+	    }
+	    
+	    var updateCurrentCluefromList = function(item) {
+	    	
+	    	direction = item.closest('div').attr('class').split(' ')[0];
+	    	var clueNumber = item.attr('value');
+	    	var clueText = item.html();
+	    	
+	    	$('.current-clue span.number').html(clueNumber);
+	    	$('.current-clue span.text').html(clueText);
+	    	
+	    	if (direction == 'across') {
+	    		$('.current-clue span.direction i').attr('class', 'icon-arrow-right');
+	    	} else {
+	    		$('.current-clue span.direction i').attr('class', 'icon-arrow-down');
+	    	}
+	    	
+	    }
+	    
+	    var updateCurrentCluefromCell = function(item) {
+	    
+			item = $('#clues .'+direction).find('li[value="'+item.attr(direction)+'"]');
+	    	
+	    	var clueNumber = item.attr('value');
+	    	var clueText = item.html();
+	    	
+	    	$('.current-clue span.number').html(clueNumber);
+	    	$('.current-clue span.text').html(clueText);
+	    	
+	    }
+	    
 	    $('#clues li').click(function() {
 	    	findCellfromClue($(this));
+	    	updateCurrentCluefromList($(this));
 	    	
 	    	activeCell.focus();	    
 		    hiliteClue(activeCell);
