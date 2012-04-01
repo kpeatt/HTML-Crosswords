@@ -215,7 +215,7 @@
 				 
 			switch(e.keyCode) {
 				case 37: // Left
-					
+										
 					activeCell = leftCell($(this));
 					
 			    	break;
@@ -247,8 +247,10 @@
 					} else {
 						if (direction == 'across') {
 				    		activeCell = leftCell($(this));
+				    		$(activeCell).val('');
 				    	} else if (direction == 'down') {
 				    		activeCell = upCell($(this));
+				    		$(activeCell).val('');
 				    	}
 					}
 					
