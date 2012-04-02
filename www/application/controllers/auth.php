@@ -97,7 +97,7 @@ class Auth extends CI_Controller
 			$data['title'] = "WordMist Login";
 			
 			$data['js'] = array('jquery', 'bootstrap');	
-			$data['css'] = array('common', 'bootstrap');
+			$data['css'] = array('bootstrap', 'common');
 			
 			$this->load->view('templates/header', $data);
 			$this->load->view('auth/login_form', $data);
