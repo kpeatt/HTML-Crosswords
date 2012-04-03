@@ -97,7 +97,7 @@ class Auth extends CI_Controller
 			$data['title'] = "WordMist Login";
 			
 			$data['js'] = array('jquery', 'bootstrap');	
-			$data['css'] = array('bootstrap', 'common');
+			$data['css'] = array('bootstrap', 'common', 'bootstrap_responsive');
 			
 			$this->load->view('templates/header', $data);
 			$this->load->view('auth/login_form', $data);
@@ -197,7 +197,15 @@ class Auth extends CI_Controller
 			$data['use_username'] = $use_username;
 			$data['captcha_registration'] = $captcha_registration;
 			$data['use_recaptcha'] = $use_recaptcha;
+			
+			$data['title'] = "Register for a WordMist Account";
+			
+			$data['js'] = array('jquery', 'bootstrap');	
+			$data['css'] = array('bootstrap', 'common', 'bootstrap_responsive');
+			
+			$this->load->view('templates/header', $data);
 			$this->load->view('auth/register_form', $data);
+			$this->load->view('templates/footer', $data);
 		}
 	}
 

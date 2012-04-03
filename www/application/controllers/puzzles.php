@@ -27,7 +27,7 @@ class Puzzles extends CI_Controller {
 		$data['puzzle'] = '';
 		
 		$data['js'] = array('jquery', 'bootstrap');	
-		$data['css'] = array('bootstrap', 'common');
+		$data['css'] = array('bootstrap', 'common', 'bootstrap_responsive');
 									
 		$this->load->view('templates/header', $data);
 		$this->load->view('puzzles/index', $data);
@@ -65,7 +65,7 @@ class Puzzles extends CI_Controller {
 		$data['title'] = $this->typography->format_characters($data['puzzle']['meta']['title']);
 										
 		$data['js'] = array('jquery', 'bootstrap', 'crosswordview');	
-		$data['css'] = array('bootstrap', 'common');
+		$data['css'] = array('bootstrap', 'common', 'bootstrap_responsive');
 		
 		$this->load->view('templates/header', $data);
 		$this->load->view('puzzles/view', $data);
