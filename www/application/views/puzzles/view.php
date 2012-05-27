@@ -33,7 +33,11 @@
 				</h2>
 			</div>
 		
-			<?php echo $html; ?>
+			<?php echo form_open('/puzzles/' . $puzzle['slug'] . '/save') ?>
+				<?php echo $html; ?>
+				
+				<button type="submit" class="btn btn-primary">Save Puzzle</button>
+			</form>
 		</div>
 	
 		<div id="clues" class="span6">

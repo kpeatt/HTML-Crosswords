@@ -61,10 +61,10 @@ class Puzzles_model extends CI_Model {
                     $html .= "\n\t\t<td class='black'></td>";
                     $k++;
                 } else if ($numgrid[$i][$j] > 0) { // It's a clue!
-                    $html .= "\n\t\t<td class='space'><div class='wrapper'><div class='number'>".$numgrid[$i][$j]."</div><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."' id='cell_".$k."' across='".$cluenumgrid['across'][$i][$j]."' down='".$cluenumgrid['down'][$i][$j]."'></div></td>";
+                    $html .= "\n\t\t<td class='space'><div class='wrapper'><div class='number'>".$numgrid[$i][$j]."</div><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."' id='cell_".$k."' name='cell_".$k."' across='".$cluenumgrid['across'][$i][$j]."' down='".$cluenumgrid['down'][$i][$j]."'></div></td>";
                     $k++;
                 } else { // It's a blank square!
-                    $html .= "\n\t\t<td class='space'><div class='wrapper'><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."'  id='cell_".$k."' across='".$cluenumgrid['across'][$i][$j]."' down='".$cluenumgrid['down'][$i][$j]."'></div></td>";
+                    $html .= "\n\t\t<td class='space'><div class='wrapper'><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."'  id='cell_".$k."' name='cell_".$k."' across='".$cluenumgrid['across'][$i][$j]."' down='".$cluenumgrid['down'][$i][$j]."'></div></td>";
                     $k++;
                 }
             }

@@ -38,6 +38,7 @@
 |
 */
 
+$route['puzzles/(:any)/save'] = 'puzzles/save/$1';
 $route['puzzles/(:any)'] = 'puzzles/view/$1';
 $route['puzzles'] = 'puzzles';
 $route['default_controller'] = "puzzles";

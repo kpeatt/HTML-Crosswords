@@ -11,9 +11,9 @@ class Puzzles extends CI_Controller {
 	
 	public function index()	{
 	
-		//if (!$this->tank_auth->is_logged_in()) {
-		//	redirect('/auth/login/');
-		//}
+		if (!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/login/');
+		}
 	
 		$data['puzzles'] = $this->puzzles_model->get_puzzle();
 		$data['title'] = 'Puzzles Collection';
@@ -35,7 +35,14 @@ class Puzzles extends CI_Controller {
 	}
 	
 	public function view($slug) {
+	
+		$this->load->helper('form');
+	
 		$data['puzzle'] = $this->puzzles_model->get_puzzle($slug);
+		
+		echo '<pre>' . $this->tank_auth->get_user_id() . '</pre>';
+		
+		$data['puzzle']['slug'] = $slug;
 
 		if (empty($data['puzzle']))
 		{
@@ -72,10 +79,15 @@ class Puzzles extends CI_Controller {
 		$this->load->view('templates/footer', $data);
 	}
 	
-	public function download() {
-		$this->load->model("src_jonesin_model");
-		$results = $this->src_jonesin_model->getConfig();
-		print_r($results);
+	public function save($slug) {
+	
+		$this->load->model('user_puzzles_model');
+		
+		$data['puzzle'] = $this->puzzles_model->get_puzzle($slug);
+		
+		$this->user_puzzles_model->save_puzzle($data['puzzle']['id']);
+		echo 'Puzzle saved!';
+				
 	}
 
 }
