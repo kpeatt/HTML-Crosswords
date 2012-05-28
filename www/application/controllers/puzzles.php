@@ -39,9 +39,7 @@ class Puzzles extends CI_Controller {
 		$this->load->helper('form');
 	
 		$data['puzzle'] = $this->puzzles_model->get_puzzle($slug);
-		
-		echo '<pre>' . $this->tank_auth->get_user_id() . '</pre>';
-		
+				
 		$data['puzzle']['slug'] = $slug;
 
 		if (empty($data['puzzle']))
