@@ -6,17 +6,19 @@
         var answerKey = "<?php echo $puzzle['answerstring']; ?>";
          
         $('input.answer').blur(function() { // Highlight correct/incorrect answers
+        
+        	var $this = $(this);
              
-            var currentCell = $(this).attr('id').substr(5);
-            var response = $(this).val().toLowerCase();
+            var currentCell = $this.attr('id').substr(5);
+            var response = $this.val().toLowerCase();
             var answer = answerKey.charAt(currentCell-1).toLowerCase();
             
             if (response === answer) {
-                $(this).removeClass('wrong').addClass('right');
+                $this.removeClass('wrong').addClass('right');
             } else if (response === '') {
-                $(this).removeClass('wrong').removeClass('right');
+                $this.removeClass('wrong').removeClass('right');
             } else {
-                $(this).removeClass('right').addClass('wrong');
+                $this.removeClass('right').addClass('wrong');
             }
             
             $('#puzzle td').removeClass('hilite'); // Remove highlights
@@ -87,9 +89,11 @@
 	    }
         
 		$('input.answer').focus(function() {  // Highlight clue spaces
-		      	        	        		
-    		hiliteClue($(this));
-    		updateCurrentCluefromCell($(this));
+		    
+		    var $this = $(this);
+		          	        		
+    		hiliteClue($this);
+    		updateCurrentCluefromCell($this);
 		    			
 		});
 		
@@ -115,7 +119,7 @@
 			}
 			
 			if (cellX <= 0) {
-				activeCell = item.closest('tr').prev('tr').find('td.space:last input.answer');
+				activeCell = item.closest('tr').prev('tr').children('td.space').last().find('input.answer');
 			}
 			
 			return activeCell;
@@ -143,7 +147,7 @@
 			}
 			
 			if (cellX > $('#puzzle tr').length) {
-				activeCell = item.closest('tr').next('tr').find('td.space:first input.answer');
+				activeCell = item.closest('tr').next('tr').children('td.space').last().find('input.answer');
 			}
 			
 			return activeCell;
@@ -205,9 +209,11 @@
 
 		$('input.answer').keydown(function(e) { //Keyboard Navigation
 		
-			var activeCell = $(this);
-			var cellX = parseInt($(this).attr('cellx'));
-			var cellY = parseInt($(this).attr('celly'));
+			var $this = $(this);
+		
+			var activeCell = $this;
+			var cellX = parseInt($this.attr('cellx'));
+			var cellY = parseInt($this.attr('celly'));
 			
 			if (e.metaKey) {
 				exit;
@@ -216,40 +222,40 @@
 			switch(e.keyCode) {
 				case 37: // Left
 										
-					activeCell = leftCell($(this));
+					activeCell = leftCell($this);
 					
 			    	break;
 		    	
 		    	case 38: // Up
 			        
-			        activeCell = upCell($(this));
+			        activeCell = upCell($this);
 								       	
 					break;
 					
 				case 39: // Right
 					
-					activeCell = rightCell($(this));
+					activeCell = rightCell($this);
 					
 			    	break;
 			    	
 			    case 40:
 			        // Down
 			        
-			   		activeCell = downCell($(this));
+			   		activeCell = downCell($this);
 			       	
 					break;
 					
 				case 8:
 					// Backspace
 					
-					if ($(this).val() != '') {
-						$(this).val('');
+					if ($this.val() != '') {
+						$this.val('');
 					} else {
 						if (direction == 'across') {
-				    		activeCell = leftCell($(this));
+				    		activeCell = leftCell($this);
 				    		$(activeCell).val('');
 				    	} else if (direction == 'down') {
-				    		activeCell = upCell($(this));
+				    		activeCell = upCell($this);
 				    		$(activeCell).val('');
 				    	}
 					}
@@ -262,13 +268,13 @@
 					if (!event.shiftKey) {
 						
 						if (direction == 'down') {
-				    		activeCell = downCell($(this));
+				    		activeCell = downCell($this);
 				    		
 				    		if(e.preventDefault) {
 				                e.preventDefault();
 				            }
 				    	} else {
-				    		activeCell = rightCell($(this));
+				    		activeCell = rightCell($this);
 				    		if(e.preventDefault) {
 				                e.preventDefault();
 				            }
@@ -277,13 +283,13 @@
 					} else {
 					
 						if (direction == 'down') {
-				    		activeCell = upCell($(this));
+				    		activeCell = upCell($this);
 				    		
 				    		if(e.preventDefault) {
 				                e.preventDefault();
 				            }
 				    	} else {
-				    		activeCell = leftCell($(this));
+				    		activeCell = leftCell($this);
 				    		if(e.preventDefault) {
 				                e.preventDefault();
 				            }
@@ -295,14 +301,14 @@
 	        		        
 		    }
 		    
-		    if (($(this).val().length == 0) && (e.keyCode >= 65 && e.keyCode <= 90)) {
+		    if (($this.val().length == 0) && (e.keyCode >= 65 && e.keyCode <= 90)) {
 		    
-		    	$(this).val(String.fromCharCode(e.keyCode));
+		    	$this.val(String.fromCharCode(e.keyCode));
 		    	
 		    	if (direction == 'across') {
-		    		activeCell = rightCell($(this));
+		    		activeCell = rightCell($this);
 		    	} else if (direction == 'down') {
-		    		activeCell = downCell($(this));
+		    		activeCell = downCell($this);
 		    	}
 		    	
 		    	if(e.preventDefault) {
@@ -310,15 +316,15 @@
 	            }
 		    }
 		    
-		    if (($(this).val().length >= 1) && (e.keyCode >= 65 && e.keyCode <= 90)) {
+		    if (($this.val().length >= 1) && (e.keyCode >= 65 && e.keyCode <= 90)) {
 		    	
-		    	$(this).val(String.fromCharCode(e.keyCode));
+		    	$this.val(String.fromCharCode(e.keyCode));
 		    	
 		    	if (direction == 'across') {
-		    		activeCell = rightCell($(this));
+		    		activeCell = rightCell($this);
 		    		
 		    	} else if (direction == 'down') {
-		    		activeCell = downCell($(this));
+		    		activeCell = downCell($this);
 		    	}
 		    	
 		    	if(e.preventDefault) {
