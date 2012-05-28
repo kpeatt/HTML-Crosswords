@@ -51,7 +51,7 @@ class Puzzles extends CI_Controller {
 		
 		$data['puzzle']['across'] = json_decode($data['puzzle']['across'], true);
 		$data['puzzle']['down'] = json_decode($data['puzzle']['down'], true);
-		
+				
 		$i = 0; //Convert Regular quotes to Smart Quotes
 		foreach ($data['puzzle']['across'] as $across) {
 			$data['puzzle']['across'][$i]['cluetext'] = $this->typography->format_characters($across['cluetext']);
@@ -83,7 +83,7 @@ class Puzzles extends CI_Controller {
 		
 		$data['puzzle'] = $this->puzzles_model->get_puzzle($slug);
 		
-		$this->user_puzzles_model->save_puzzle($data['puzzle']['id']);
+		$this->user_puzzles_model->save_puzzle($data['puzzle']);
 		echo 'Puzzle saved!';
 				
 	}

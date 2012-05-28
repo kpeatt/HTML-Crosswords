@@ -147,7 +147,7 @@
 			}
 			
 			if (cellX > $('#puzzle tr').length) {
-				activeCell = item.closest('tr').next('tr').children('td.space').last().find('input.answer');
+				activeCell = item.closest('tr').next('tr').children('td.space').first().find('input.answer');
 			}
 			
 			return activeCell;
