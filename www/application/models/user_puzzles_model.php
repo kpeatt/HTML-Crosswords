@@ -47,7 +47,6 @@ class user_puzzles_model extends CI_Model
 			
 			if ($keyarray[$i] == $answer) {
 				$totalright++;
-				echo 'one right!\n';
 			}
 			
 			$i++;
@@ -77,9 +76,7 @@ class user_puzzles_model extends CI_Model
 			'answers' => $answerstring,
 			'progress' => $this->percent_complete($answerstring, $answerkey)
 		);
-		
-		print_r($data);
-		
+				
 		$where = array('user_id'=>$userid, 'puzzle_id'=>$puzzleid);
 		$this->db->from('user_puzzles')->where($where);
 	    if ($this->db->count_all_results() == 0) { 
