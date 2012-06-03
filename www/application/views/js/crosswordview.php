@@ -132,7 +132,7 @@
 		
 			var cellX = parseInt(item.attr('cellx'));
 			var cellY = parseInt(item.attr('celly'));
-		
+
 			cellX = cellX + 1;
 					
 			activeCell = $('input.answer[celly=' + cellY + '][cellx=' + cellX + ']');
@@ -149,7 +149,7 @@
 			if (cellX > $('#puzzle tr').length) {
 				activeCell = item.closest('tr').next('tr').children('td.space').first().find('input.answer');
 			}
-			
+						
 			return activeCell;
 		
 		}

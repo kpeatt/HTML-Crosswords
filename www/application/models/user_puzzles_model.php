@@ -78,7 +78,10 @@ class user_puzzles_model extends CI_Model
 			'progress' => $this->percent_complete($answerstring, $answerkey)
 		);
 		
-		$this->db->from('user_puzzles')->where(array('user_id'=>$userid, 'puzzle_id'=>$puzzleid));
+		print_r($data);
+		
+		$where = array('user_id'=>$userid, 'puzzle_id'=>$puzzleid);
+		$this->db->from('user_puzzles')->where($where);
 	    if ($this->db->count_all_results() == 0) { 
 	      // A record does not exist, insert one.
 	      
@@ -91,6 +94,7 @@ class user_puzzles_model extends CI_Model
 	    } else {
 	      // A record does exist, update it.
 	      
+	      $this->db->where($where);
 	      $this->db->update('user_puzzles', $data);
 	      
 	    }
