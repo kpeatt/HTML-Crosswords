@@ -5,43 +5,36 @@
     	
         var answerKey = "<?php echo $puzzle['answerstring']; ?>";
         
-    	$('input.answer').each(function() {
-    		var $this = $(this);
-             
-            var currentCell = $this.attr('id').substr(5);
-            var response = $this.val().toLowerCase();
+        var checkAnswer = function(item) {
+	        
+	        var currentCell = item.attr('id').substr(5);
+            var response = item.val().toLowerCase();
             var answer = answerKey.charAt(currentCell-1).toLowerCase();
-            
-            if (response === answer) {
-                $this.removeClass('wrong').addClass('right');
+	        
+	        if (response === answer) {
+                item.removeClass('wrong').addClass('right');
             } else if (response === '') {
-                $this.removeClass('wrong').removeClass('right');
+                item.removeClass('wrong').removeClass('right');
             } else {
-                $this.removeClass('right').addClass('wrong');
+                item.removeClass('right').addClass('wrong');
             }
             
             $('#puzzle td').removeClass('hilite'); // Remove highlights
 			$('#clues li').removeClass('active');
+	        
+        }
+        
+    	$('input.answer').each(function() {
+    		var $this = $(this);
+             
+    		checkAnswer($this);
     	});
          
         $('input.answer').blur(function() { // Highlight correct/incorrect answers
         
         	var $this = $(this);
              
-            var currentCell = $this.attr('id').substr(5);
-            var response = $this.val().toLowerCase();
-            var answer = answerKey.charAt(currentCell-1).toLowerCase();
-            
-            if (response === answer) {
-                $this.removeClass('wrong').addClass('right');
-            } else if (response === '') {
-                $this.removeClass('wrong').removeClass('right');
-            } else {
-                $this.removeClass('right').addClass('wrong');
-            }
-            
-            $('#puzzle td').removeClass('hilite'); // Remove highlights
-			$('#clues li').removeClass('active');
+            checkAnswer($this);
              
         });
         
