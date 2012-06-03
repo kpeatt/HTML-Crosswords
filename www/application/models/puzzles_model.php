@@ -112,7 +112,7 @@ class Puzzles_model extends CI_Model {
 				}
 			}
 								
-			if (isset($userstring)){
+			if (isset($userstring) && $userstring != ''){
 				for ($i = 0; $i <= $height-1; $i++) { // Make a 2d array of answers
 				    $usergrid[$i] = str_split(substr($userstring, $i*$width, $width));
 				}
@@ -124,13 +124,11 @@ class Puzzles_model extends CI_Model {
 				for ($i = 0; $i <= $width; $i++) {
 				    array_unshift($usergrid[$i], -1);
 				}
-				
-				//echo '<pre>'; print_r($usergrid); echo '</pre>';
-				
+								
 				// Remove '-' from usergrid for rendering
 				for ($i = 1; $i <= $height; $i++) {
 				    for ($j = 1; $j <= $width; $j++) { 
-				        if ($usergrid[$i][$j] == '-') { 
+				        if (isset($usergrid[$i][$j]) && $usergrid[$i][$j] == '-') { 
 				        	$usergrid[$i][$j] = '';
 				        }
 				    }
