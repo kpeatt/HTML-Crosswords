@@ -44,6 +44,7 @@ class Puzzles_model extends CI_Model {
 		$bwgrid = $puzzleGrids['bwgrid'];
 		$numgrid = $puzzleGrids['numgrid'];
 		$cluenumgrid = $puzzleGrids['cluenumgrid'];
+		$usergrid = $puzzleGrids['usergrid'];
 				
 		///Time to render the HTML!
 		
@@ -61,10 +62,23 @@ class Puzzles_model extends CI_Model {
                     $html .= "\n\t\t<td class='black'></td>";
                     $k++;
                 } else if ($numgrid[$i][$j] > 0) { // It's a clue!
-                    $html .= "\n\t\t<td class='space'><div class='wrapper'><div class='number'>".$numgrid[$i][$j]."</div><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."' id='cell_".$k."' name='cell_".$k."' across='".$cluenumgrid['across'][$i][$j]."' down='".$cluenumgrid['down'][$i][$j]."'></div></td>";
+                    $html .= "\n\t\t<td class='space'>\n\t\t\t<div class='wrapper'>\n\t\t\t\t";
+                    $html .= "<div class='number'>".$numgrid[$i][$j]."</div>\n\t\t\t\t";
+                    $html .= "<input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."' id='cell_".$k."' name='cell_".$k."' ";
+                    $html .= "across='".$cluenumgrid['across'][$i][$j]."' down='".$cluenumgrid['down'][$i][$j]."' ";
+                    if (isset($usergrid[$i][$j])) {
+                    	$html .= "value='".$usergrid[$i][$j]."'";
+                    }
+                    $html .= ">\n\t\t\t</div>\n\t\t</td>";
                     $k++;
                 } else { // It's a blank square!
-                    $html .= "\n\t\t<td class='space'><div class='wrapper'><input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."'  id='cell_".$k."' name='cell_".$k."' across='".$cluenumgrid['across'][$i][$j]."' down='".$cluenumgrid['down'][$i][$j]."'></div></td>";
+                    $html .= "\n\t\t<td class='space'>\n\t\t\t<div class='wrapper'>\n\t\t\t\t";
+                    $html .= "<input type='text' class='answer' maxlength='1' cellx='".$j."' celly='".$i."' id='cell_".$k."' name='cell_".$k."' ";
+                    $html .= "across='".$cluenumgrid['across'][$i][$j]."' down='".$cluenumgrid['down'][$i][$j]."' ";
+                    if (isset($usergrid[$i][$j])) {
+                    	$html .= "value='".$usergrid[$i][$j]."'";
+                    }
+                    $html .= ">\n\t\t\t</div>\n\t\t</td>";
                     $k++;
                 }
             }
@@ -79,11 +93,51 @@ class Puzzles_model extends CI_Model {
 	}
 	
 	public function puzzle_grids($puzzle) {
-		
+			
 		$width = $puzzle['meta']['width'];
 		$height = $puzzle['meta']['height'];
 		$answerstring = $puzzle['answerstring'];
 		$bwstring = $puzzle['bwstring'];
+		
+		// If a user has saved data, let's use that to fill out the puzzle
+		
+		$usergrid = array();
+		$userid = $this->tank_auth->get_user_id();
+		if (isset($userid)) {
+			$where = array('user_id'=>$userid, 'puzzle_id'=>$puzzle['id']);
+			$query = $this->db->get_where('user_puzzles', $where);
+			if ($query->num_rows() > 0) {
+				foreach ($query->result() as $row) {
+					$userstring = $row->answers;
+				}
+			}
+								
+			if (isset($userstring)){
+				for ($i = 0; $i <= $height-1; $i++) { // Make a 2d array of answers
+				    $usergrid[$i] = str_split(substr($userstring, $i*$width, $width));
+				}
+			
+				array_unshift($usergrid, array()); // Add row of -1s to top and left of usergrid
+				for ($i = 0; $i < $width; $i++) {
+				    array_push($usergrid[0], -1);
+				}
+				for ($i = 0; $i <= $width; $i++) {
+				    array_unshift($usergrid[$i], -1);
+				}
+				
+				//echo '<pre>'; print_r($usergrid); echo '</pre>';
+				
+				// Remove '-' from usergrid for rendering
+				for ($i = 1; $i <= $height; $i++) {
+				    for ($j = 1; $j <= $width; $j++) { 
+				        if ($usergrid[$i][$j] == '-') { 
+				        	$usergrid[$i][$j] = '';
+				        }
+				    }
+				}
+			}
+		
+		}
 
 		$answergrid = array();
 
@@ -194,7 +248,7 @@ class Puzzles_model extends CI_Model {
 		 
 		}
 		
-		$puzzleGrids = array('bwgrid' => $bwgrid, 'numgrid' => $numgrid, 'answergrid' => $answergrid, 'cluenumgrid' => $cluenumgrid);
+		$puzzleGrids = array('bwgrid' => $bwgrid, 'numgrid' => $numgrid, 'answergrid' => $answergrid, 'cluenumgrid' => $cluenumgrid, 'usergrid' => $usergrid);
 				
 		return $puzzleGrids;
 		
