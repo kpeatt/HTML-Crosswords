@@ -4,6 +4,25 @@
     	$('#puzzle td').height($('#puzzle td').width());
     	
         var answerKey = "<?php echo $puzzle['answerstring']; ?>";
+        
+    	$('input.answer').each(function() {
+    		var $this = $(this);
+             
+            var currentCell = $this.attr('id').substr(5);
+            var response = $this.val().toLowerCase();
+            var answer = answerKey.charAt(currentCell-1).toLowerCase();
+            
+            if (response === answer) {
+                $this.removeClass('wrong').addClass('right');
+            } else if (response === '') {
+                $this.removeClass('wrong').removeClass('right');
+            } else {
+                $this.removeClass('right').addClass('wrong');
+            }
+            
+            $('#puzzle td').removeClass('hilite'); // Remove highlights
+			$('#clues li').removeClass('active');
+    	});
          
         $('input.answer').blur(function() { // Highlight correct/incorrect answers
         
