@@ -96,7 +96,7 @@ $captcha = array(
 					
 					<div class="control-group">
 						<div class="controls">
-							<p class="help-block"><fb:login-button v="2" perms="" length="long" onlogin='window.location="https://graph.facebook.com/oauth/authorize?client_id=<?php echo $this->config->item('appId'); ?>&redirect_uri=<?php echo site_url('auth_other/fb_signin'); ?>&scope=email&amp;r="+window.location.href;'></fb:login-button></p>
+							<p class="help-block"><fb:login-button v="2" perms="" length="long" onlogin='window.location="https://graph.facebook.com/oauth/authorize?client_id=<?php echo $this->config->item('facebook_app_id'); ?>&redirect_uri=<?php echo site_url('auth_other/fb_signin'); ?>&scope=email&amp;r="+window.location.href;'></fb:login-button></p>
 							
 							<p class="help-block"><a class="twitter" href="<?php echo site_url('auth_other/twitter_signin'); ?>">
 								<img style="margin-top:5px;" src="<?php echo base_url(); ?>img/twitter_login_button.gif" alt="twitter login" border="0"/>
