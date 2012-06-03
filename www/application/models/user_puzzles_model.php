@@ -36,9 +36,27 @@ class user_puzzles_model extends CI_Model
 		
 		$answerkey = str_replace('.', '', $answerkey);
 		$answerstring = str_replace('.', '', $answerstring);
-		$answerstring = str_replace('-', '', $answerstring);
 		
-		similar_text($answerstring, $answerkey, $complete);		
+		$answerarray = str_split($answerstring);
+		$keyarray = str_split($answerkey);
+				
+		$i = 0;
+		$size = sizeof($keyarray);
+		$totalright = 0;
+		foreach ($answerarray as $answer) {
+			
+			if ($keyarray[$i] == $answer) {
+				$totalright++;
+				echo 'one right!\n';
+			}
+			
+			$i++;
+		}
+		
+		$complete = ($totalright/$size)*100;
+		
+		$complete = round($complete, 2);
+				
 		return $complete;
 		
 	}
@@ -75,7 +93,6 @@ class user_puzzles_model extends CI_Model
 	      
 	      $this->db->update('user_puzzles', $data);
 	      
-	      echo 'updated';
 	    }
 		
 	}
