@@ -3,7 +3,7 @@
 		<div class="navbar-inner">
 		    <div class="container">
 
-				<a class="brand" href="#">
+				<a class="brand" href="/">
 					WordMist
 				</a>
 				
@@ -11,6 +11,18 @@
 	  </div>
 	
 	</div>
+	
+	<?php if ($this->session->flashdata('success') != '') { ?>
+	<div class="alert alert-success">
+		<?php echo $this->session->flashdata('success'); ?>
+	</div>
+	<?php } ?>
+	
+	<?php if ($this->session->flashdata('error') != '') { ?>
+	<div class="alert alert-error">
+		<?php echo $this->session->flashdata('error'); ?>
+	</div>
+	<?php } ?>
 	
 	<div class="row-fluid">
 	
@@ -33,7 +45,7 @@
 				</h2>
 			</div>
 		
-			<?php echo form_open('/puzzles/' . $puzzle['slug'] . '/save') ?>
+			<?php echo form_open('/puzzles/' . $puzzle['slug']) ?>
 				<?php echo $html; ?>
 				
 				<button type="submit" class="btn btn-primary">Save Puzzle</button>

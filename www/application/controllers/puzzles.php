@@ -37,6 +37,7 @@ class Puzzles extends CI_Controller {
 	public function view($slug) {
 	
 		$this->load->helper('form');
+		$this->load->model('user_puzzles_model');
 	
 		$data['puzzle'] = $this->puzzles_model->get_puzzle($slug);
 				
@@ -45,6 +46,18 @@ class Puzzles extends CI_Controller {
 		if (empty($data['puzzle']))
 		{
 			show_404();
+		}
+				
+		// Save functionality, post to self
+		if ($this->input->post()) {
+			$saved = $this->user_puzzles_model->save_puzzle($data['puzzle']);
+		}
+		
+		// Give user messages if successful/unsuccessful
+		if (isset($saved) && $saved) {
+			$this->session->set_flashdata('success', 'Puzzle has been saved');	
+		} else if (isset($saved)) {
+			$this->session->set_flashdata('error', 'Puzzle could not be saved. Please try again.');	
 		}
 		
 		$data['html'] = $this->puzzles_model->render_puzzle($data['puzzle']);
@@ -84,8 +97,7 @@ class Puzzles extends CI_Controller {
 		$data['puzzle'] = $this->puzzles_model->get_puzzle($slug);
 		
 		$this->user_puzzles_model->save_puzzle($data['puzzle']);
-		echo 'Puzzle saved!';
-				
+						
 	}
 
 }
