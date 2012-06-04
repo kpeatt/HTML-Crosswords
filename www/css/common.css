@@ -3,6 +3,13 @@ body {
     padding-top: 40px;
 }
 
+header .avatar {
+	display: inline-block;
+	vertical-align: text-top;
+	margin-top: -2px;
+	margin-right: 5px;
+}
+
 #puzzle table {
     border: 1px solid black;
     border-collapse: collapse;

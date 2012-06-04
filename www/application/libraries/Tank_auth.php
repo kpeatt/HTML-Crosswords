@@ -71,6 +71,7 @@ class Tank_auth
 						$this->ci->session->set_userdata(array(
 								'user_id'	=> $user->id,
 								'username'	=> $user->username,
+								'email' 	=> $user->email,
 								'status'	=> ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED,
 						));
 
@@ -113,7 +114,7 @@ class Tank_auth
 		$this->delete_autologin();
 
 		// See http://codeigniter.com/forums/viewreply/662369/ as the reason for the next line
-		$this->ci->session->set_userdata(array('user_id' => '', 'username' => '', 'status' => '', 'facebook_id' => '', 'twitter_id' => '', 'google_open_id' => '', 'yahoo_open_id'));
+		$this->ci->session->set_userdata(array('user_id' => '', 'username' => '', 'email' => '', 'status' => '', 'facebook_id' => '', 'twitter_id' => '', 'google_open_id' => '', 'yahoo_open_id'));
 
 		$this->ci->session->sess_destroy();
 	}
@@ -147,6 +148,16 @@ class Tank_auth
 	function get_username()
 	{
 		return $this->ci->session->userdata('username');
+	}
+	
+	/**
+	 * Get email
+	 *
+	 * @return	string
+	 */
+	function get_email()
+	{
+		return $this->ci->session->userdata('email');
 	}
 
 	/**

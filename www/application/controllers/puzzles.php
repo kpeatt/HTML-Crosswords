@@ -7,6 +7,7 @@ class Puzzles extends CI_Controller {
 		$this->load->model('puzzles_model');
 		$this->load->helper('json'); 
 		$this->load->library('typography');
+		$this->load->library('gravatar');
 	}
 	
 	public function index()	{
@@ -39,10 +40,18 @@ class Puzzles extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->model('user_puzzles_model');
 	
+		// Check if user is logged in and get userdata		
+		if (!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/login/');
+		} else {
+			$data['user']['id'] = $this->tank_auth->get_user_id();
+			$data['user']['username'] = $this->tank_auth->get_username();
+			$data['user']['email'] = $this->tank_auth->get_email();
+			$data['user']['avatar'] = $this->gravatar->get_gravatar($data['user']['email'], 'pg', '20', 'mm');
+		}
+				
 		$data['puzzle'] = $this->puzzles_model->get_puzzle($slug);
 				
-		$data['puzzle']['slug'] = $slug;
-
 		if (empty($data['puzzle']))
 		{
 			show_404();

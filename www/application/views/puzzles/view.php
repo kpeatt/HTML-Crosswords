@@ -1,29 +1,3 @@
-	<div class="navbar navbar-fixed-top">
-	
-		<div class="navbar-inner">
-		    <div class="container">
-
-				<a class="brand" href="/">
-					WordMist
-				</a>
-				
-		    </div>
-	  </div>
-	
-	</div>
-	
-	<?php if ($this->session->flashdata('success') != '') { ?>
-	<div class="alert alert-success">
-		<?php echo $this->session->flashdata('success'); ?>
-	</div>
-	<?php } ?>
-	
-	<?php if ($this->session->flashdata('error') != '') { ?>
-	<div class="alert alert-error">
-		<?php echo $this->session->flashdata('error'); ?>
-	</div>
-	<?php } ?>
-	
 	<div class="row-fluid">
 	
 		<div class="span12">
@@ -45,7 +19,7 @@
 				</h2>
 			</div>
 		
-			<?php echo form_open('/puzzles/' . $puzzle['slug']) ?>
+			<?php echo form_open('/puzzles/' . $puzzle['slug'], array('id' => 'save-puzzle')) ?>
 				<?php echo $html; ?>
 				
 				<button type="submit" class="btn btn-primary">Save Puzzle</button>

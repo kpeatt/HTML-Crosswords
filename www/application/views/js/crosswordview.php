@@ -8,7 +8,7 @@
         var checkAnswer = function(item) {
 	        
 	        var currentCell = item.attr('id').substr(5);
-            var response = item.val().toLowerCase();
+	        var response = item.val().toLowerCase();
             var answer = answerKey.charAt(currentCell-1).toLowerCase();
 	        
 	        if (response === answer) {
