@@ -1,19 +1,9 @@
 	<div class="navbar subnav subnav-fixed">
 		<div class="container-fluid">
-			<a href="" class="btn btn-primary">Save Puzzle</a>
+			<h3 class="navbar-text pull-left"><?php echo $puzzle['meta']['title']; ?></h3>
+			<a href="" class="btn btn-success pull-right" id="ajax-save">Save Puzzle</a>
 		</div>
 	</div><!-- /subnav -->
-	
-	<div class="row-fluid">
-	
-		<div class="span12">
-		
-			<h1><?php echo $puzzle['meta']['title']; ?></h1>
-			<p><?php if(isset($puzzle['meta']['author']) && !empty($puzzle['meta']['author'])) { echo $puzzle['meta']['author']; } if (isset($puzzle['meta']['author']) && !empty($puzzle['meta']['copyright'])) { echo ', '.$puzzle['meta']['copyright']; } ?></p>
-			
-		</div>
-
-	</div>
 	
 	<div class="row-fluid">
 		
@@ -27,8 +17,6 @@
 		
 			<?php echo form_open('/puzzles/' . $puzzle['slug'], array('id' => 'save-puzzle')) ?>
 				<?php echo $html; ?>
-				
-				<button type="submit" class="btn btn-primary">Save Puzzle</button>
 			</form>
 		</div>
 	

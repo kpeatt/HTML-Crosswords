@@ -96,6 +96,8 @@ class Auth extends CI_Controller
 			
 			$data['title'] = "WordMist Login";
 			
+			$data['template']['name'] = 'login';
+			
 			$data['js'] = array('jquery', 'bootstrap');	
 			$data['css'] = array('bootstrap', 'common', 'bootstrap_responsive');
 			

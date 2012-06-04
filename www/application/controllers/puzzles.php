@@ -12,8 +12,14 @@ class Puzzles extends CI_Controller {
 	
 	public function index()	{
 	
+		// Check if user is logged in and get userdata		
 		if (!$this->tank_auth->is_logged_in()) {
 			redirect('/auth/login/');
+		} else {
+			$data['user']['id'] = $this->tank_auth->get_user_id();
+			$data['user']['username'] = $this->tank_auth->get_username();
+			$data['user']['email'] = $this->tank_auth->get_email();
+			$data['user']['avatar'] = $this->gravatar->get_gravatar($data['user']['email'], 'pg', '20', 'mm');
 		}
 	
 		$data['puzzles'] = $this->puzzles_model->get_puzzle();
@@ -26,6 +32,8 @@ class Puzzles extends CI_Controller {
 		}
 		
 		$data['puzzle'] = '';
+		
+		$data['template']['name'] = 'puzzle-list';
 		
 		$data['js'] = array('jquery', 'bootstrap');	
 		$data['css'] = array('bootstrap', 'common', 'bootstrap_responsive');

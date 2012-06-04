@@ -24,21 +24,15 @@
 	        
         }
         
-    	$('input.answer').each(function() {
-    		var $this = $(this);
-             
-    		checkAnswer($this);
+    	$('input.answer').each(function() { // Check answers on page load
+    		checkAnswer($(this));
     	});
          
         $('input.answer').blur(function() { // Highlight correct/incorrect answers
-        
-        	var $this = $(this);
-             
-            checkAnswer($this);
-             
+            checkAnswer($(this));
         });
         
-        var direction = 'across';
+        var direction = 'across'; // People type Across by default
         
         $('input.answer').dblclick(function() { // Change puzzle entry direction on double click
         
@@ -228,7 +222,7 @@
 			var cellY = parseInt($this.attr('celly'));
 			
 			if (e.metaKey) {
-				exit;
+				return false;
 			}
 				 
 			switch(e.keyCode) {
@@ -417,7 +411,14 @@
 		    hiliteClue(activeCell);
 	    });
 	    
+	    /* Ajax Time !TODO: Make this actually ajax... D: */
 	    
+	    $('#ajax-save').click(function() { 
+	    
+	    	document.forms["save-puzzle"].submit();
+	    	return false;
+	    
+	    });
 	    
             
     });

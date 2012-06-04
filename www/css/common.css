@@ -163,6 +163,10 @@ header .avatar {
           border-radius: 0 0 4px 4px;
 }
 
+.subnav.navbar .navbar-text {
+	color: #333333;
+}
+
 /* Fixed subnav on scroll, but only for 980px and up (sorry IE!) */
 @media (min-width: 980px) {
   .subnav-fixed {
