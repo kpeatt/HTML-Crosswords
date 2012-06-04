@@ -90,7 +90,9 @@ class Puzzles extends CI_Controller {
 		$data['puzzle']['meta']['author'] = $this->typography->format_characters($data['puzzle']['meta']['author']);
 		
 		$data['title'] = $this->typography->format_characters($data['puzzle']['meta']['title']);
-										
+		
+		$data['template']['name'] = 'puzzle-view';
+								
 		$data['js'] = array('jquery', 'bootstrap', 'crosswordview');	
 		$data['css'] = array('bootstrap', 'common', 'bootstrap_responsive');
 		

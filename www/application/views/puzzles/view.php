@@ -1,3 +1,9 @@
+	<div class="navbar subnav subnav-fixed">
+		<div class="container-fluid">
+			<a href="" class="btn btn-primary">Save Puzzle</a>
+		</div>
+	</div><!-- /subnav -->
+	
 	<div class="row-fluid">
 	
 		<div class="span12">

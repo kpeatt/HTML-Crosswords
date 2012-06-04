@@ -28,7 +28,7 @@
 
 </head>
 
-<body>
+<body class="<?php echo $template['name']; ?>">
 
 	<header class="navbar navbar-fixed-top">
 	
