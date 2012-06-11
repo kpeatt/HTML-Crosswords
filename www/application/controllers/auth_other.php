@@ -309,6 +309,8 @@ class auth_other extends CI_Controller
 			$data['js'] = array('jquery', 'bootstrap');	
 			$data['css'] = array('common', 'bootstrap');
 			
+			$data['template']['name'] = 'login';
+			
 			$this->load->view('templates/header', $data); 
 			$this->load->view('auth_other/fill_user_info', $data); 
 			$this->load->view('templates/footer', $data);

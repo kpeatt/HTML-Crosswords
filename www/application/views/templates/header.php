@@ -48,11 +48,11 @@
 						    </a>
 						    <ul class="dropdown-menu">
 						    	<li>
-						    		<a href="/user/profile">Account Settings</a>
+						    		<a href="/user/profile"><i class="icon-user"></i> Account Settings</a>
 						    	</li>
 						    	<li class="divider"></li>
 						    	<li>
-						    		<a href="/auth/logout">Sign out</a>
+						    		<a href="/auth/logout"><i class="icon-off"></i> Sign out</a>
 						    	</li>
 						    </ul>
 						  </li>

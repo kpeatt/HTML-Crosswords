@@ -1,8 +1,22 @@
 <script type="text/javascript">
-    $(function(){
+
+    	    
+    var resizePuzzle = function($puzzle) {
+       	       
+       var navbarHeight = $('.navbar').height() + $('.subnav').height();
+       
+       $('#puzzle').height($(window).height() - $('#puzzle .well').height() - 40);
     
-    	$('#puzzle td').height($('#puzzle td').width());
-    	
+       var height = (($('#puzzle').height() - navbarHeight) * 0.95);
+	   $puzzle.width(height).height(height);
+	    
+	   var $cell = $puzzle.find('td');
+	    
+	   $cell.height($cell.width());
+    }
+    
+    $(function(){
+        	
         var answerKey = "<?php echo $puzzle['answerstring']; ?>";
         
         var checkAnswer = function(item) {
@@ -410,8 +424,8 @@
 	    	activeCell.focus();	    
 		    hiliteClue(activeCell);
 	    });
-	    
-	    /* Ajax Time !TODO: Make this actually ajax... D: */
+	    	    
+	    /* Ajax Save !TODO: Make this actually ajax... D: */
 	    
 	    $('#ajax-save').click(function() { 
 	    
@@ -420,11 +434,13 @@
 	    
 	    });
 	    
+    	resizePuzzle($('#puzzle table'));
+	    
             
     });
     
     $(window).resize(function() {
-    	$('#puzzle td').height($('#puzzle td').width());
+    	resizePuzzle($('#puzzle table'));
     });
     
 </script>

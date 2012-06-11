@@ -16,14 +16,21 @@ header .avatar {
 		
 }
 
+#puzzle {
+    background: #333;
+}
+
 #puzzle table {
     border: 1px solid black;
     border-collapse: collapse;
     empty-cells: show;
+    
+    margin: 0 auto;
+    
+    background: white;
 }
  
 #puzzle td {
-    width: 2%;
     border: 1px solid black;
     text-align: center;
 }
@@ -94,6 +101,14 @@ header .avatar {
 
 #clues li.active {
 	background: lightYellow;
+}
+
+#clues {
+    
+}
+
+.current-clue {
+        
 }
 
 .current-clue .direction i {
@@ -198,5 +213,11 @@ header .avatar {
   }
 }
 
+.subnav .btn-toolbar {
+    margin: 0;
+}
 
+.subnav + .row-fluid {
+    margin-top: -3px;
+}
 
